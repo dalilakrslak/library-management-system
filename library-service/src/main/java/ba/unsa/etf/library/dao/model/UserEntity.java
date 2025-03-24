@@ -1,4 +1,4 @@
-package ba.unsa.etf.book.dao.model;
+package ba.unsa.etf.library.dao.model;
 
 import java.io.Serializable;
 
@@ -30,4 +30,12 @@ public class UserEntity implements Serializable {
     private String password;
 
     private String phone;
+
+    @OneToOne
+    @JoinColumn(name = "role_id")
+    private RoleEntity role;
+
+    @ManyToOne
+    @JoinColumn(name = "library_id")
+    private LibraryEntity library;
 }
