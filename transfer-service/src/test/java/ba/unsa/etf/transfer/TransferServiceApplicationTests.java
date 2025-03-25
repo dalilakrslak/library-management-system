@@ -1,4 +1,4 @@
-package ba.unsa.etf.transfer_service;
+package ba.unsa.etf.transfer;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
