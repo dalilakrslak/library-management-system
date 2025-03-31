@@ -28,9 +28,9 @@ public class User implements Serializable {
     @Schema(description = "Phone number of the user")
     private String phone;
 
-    @Schema(description = "Role of the user")
-    private Role role;
+    @Schema(description = "Role ID")
+    private Long roleId;
 
-    @Schema(description = "Library associated with the user")
-    private Library library;
+    @Schema(description = "Library ID")
+    private Long libraryId;
 }
