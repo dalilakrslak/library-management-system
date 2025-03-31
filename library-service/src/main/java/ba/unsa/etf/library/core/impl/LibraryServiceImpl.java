@@ -45,6 +45,9 @@ public class LibraryServiceImpl implements LibraryService {
     @Override
     @Transactional
     public Library update(Library library) {
+        if (!libraryRepository.existsById(library.getId())) {
+            return null;
+        }
         LibraryEntity libraryEntity = libraryMapper.dtoToEntity(library);
         libraryRepository.save(libraryEntity);
         return libraryMapper.entityToDto(libraryEntity);

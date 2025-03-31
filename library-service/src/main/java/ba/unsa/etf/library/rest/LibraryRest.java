@@ -44,7 +44,7 @@ public class LibraryRest {
     public ResponseEntity<Library> update(@PathVariable Long id, @RequestBody Library library) {
         library.setId(id);
         Library updatedLibrary = libraryService.update(library);
-        return ResponseEntity.ok(updatedLibrary);
+        return updatedLibrary != null ? ResponseEntity.ok(updatedLibrary) : ResponseEntity.notFound().build();
     }
 
     @Operation(summary = "Delete library")
