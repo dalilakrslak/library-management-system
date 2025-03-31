@@ -20,8 +20,8 @@ public class BookVersionEntity implements Serializable {
     private BookEntity book;
 
     @Column(name = "is_checked_out")
-    private boolean isCheckedOut;
+    private Boolean isCheckedOut;
 
     @Column(name = "is_reserved")
-    private boolean isReserved;
+    private Boolean isReserved;
 }

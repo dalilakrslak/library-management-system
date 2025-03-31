@@ -2,6 +2,8 @@ package ba.unsa.etf.book;
 
 import ba.unsa.etf.book.dao.model.*;
 import ba.unsa.etf.book.dao.repository.*;
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.info.Info;
 import lombok.AllArgsConstructor;
 import org.apache.catalina.User;
 import org.springframework.boot.CommandLineRunner;
@@ -34,19 +36,19 @@ public class BookServiceApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) {
-		AuthorEntity author = new AuthorEntity(null, "Ivo", "Andrić", "Dobitnik Nobelove nagrade za književnost.");
+		/*AuthorEntity author = new AuthorEntity(null, "Ivo", "Andrić", "Dobitnik Nobelove nagrade za književnost.");
 		authorRepository.save(author);
 
 		GenreEntity genre = new GenreEntity(null, "Roman");
 		genreRepository.save(genre);
 
-		UserEntity user = new UserEntity(null, "Marko", "Marković", "marko@gmail.com", "1234", "061111111");
+		UserEntity user = new UserEntity(null, "Marko", "Marković", "mmarkovic123@gmail.com", "1234", "061111111");
 		userRepository.save(user);
 
 		BookEntity book = new BookEntity(null, "Na Drini ćuprija", "Roman o životu u Bosni pod Osmanlijama.",312, 1945, "bosanski", author, genre);
 		bookRepository.save(book);
 
-		BookVersionEntity bookVersion = new BookVersionEntity("9781234567897", book, false, false);
+		BookVersionEntity bookVersion = new BookVersionEntity("9781234755117", book, false, false);
 		bookVersionRepository.save(bookVersion);
 
 		LoanEntity loan = new LoanEntity(null, user, bookVersion,
@@ -56,6 +58,6 @@ public class BookServiceApplication implements CommandLineRunner {
 		loanRepository.save(loan);
 
 		ReservationEntity reservation = new ReservationEntity(null, user, bookVersion, LocalDate.now());
-		reservationRepository.save(reservation);
+		reservationRepository.save(reservation);*/
 	}
 }
