@@ -45,9 +45,6 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public User update(User user) {
-        if (!userRepository.existsById(user.getId())) {
-            return null;
-        }
         UserEntity userEntity = userMapper.dtoToEntity(user);
         userRepository.save(userEntity);
         return userMapper.entityToDto(userEntity);

@@ -45,9 +45,6 @@ public class LoanServiceImpl implements LoanService {
     @Override
     @Transactional
     public Loan update(Loan loan) {
-        if (!loanRepository.existsById(loan.getId())) {
-            return null;
-        }
         LoanEntity loanEntity = loanMapper.dtoToEntity(loan);
         loanRepository.save(loanEntity);
         return loanMapper.entityToDto(loanEntity);

@@ -45,9 +45,6 @@ public class GenreServiceImpl implements GenreService {
     @Override
     @Transactional
     public Genre update(Genre genre) {
-        if (!genreRepository.existsById(genre.getId())) {
-            return null;
-        }
         GenreEntity genreEntity = genreMapper.dtoToEntity(genre);
         genreRepository.save(genreEntity);
         return genreMapper.entityToDto(genreEntity);

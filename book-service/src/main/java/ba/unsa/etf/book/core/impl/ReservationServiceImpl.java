@@ -45,9 +45,6 @@ public class ReservationServiceImpl implements ReservationService {
     @Override
     @Transactional
     public Reservation update(Reservation reservation) {
-        if (!reservationRepository.existsById(reservation.getId())) {
-            return null;
-        }
         ReservationEntity reservationEntity = reservationMapper.dtoToEntity(reservation);
         reservationRepository.save(reservationEntity);
         return reservationMapper.entityToDto(reservationEntity);

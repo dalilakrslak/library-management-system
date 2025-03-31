@@ -45,9 +45,6 @@ public class BookServiceImpl implements BookService {
     @Override
     @Transactional
     public Book update(Book book) {
-        if (!bookRepository.existsById(book.getId())) {
-            return null;
-        }
         BookEntity bookEntity = bookMapper.dtoToEntity(book);
         bookRepository.save(bookEntity);
         return bookMapper.entityToDto(bookEntity);

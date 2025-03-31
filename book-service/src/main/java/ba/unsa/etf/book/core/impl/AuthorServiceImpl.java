@@ -47,9 +47,6 @@ public class AuthorServiceImpl implements AuthorService {
     @Transactional
     public Author update(Author author) {
         authorValidation.validateUpdate(author);
-        if (!authorRepository.existsById(author.getId())) {
-            return null;
-        }
         AuthorEntity authorEntity = authorMapper.dtoToEntity(author);
         authorRepository.save(authorEntity);
         return authorMapper.entityToDto(authorEntity);
