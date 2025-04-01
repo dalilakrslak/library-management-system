@@ -99,7 +99,7 @@ class BookTests {
 
     @Test
     void testCreate() {
-        Book bookToCreate = new Book(1l, "New Book", "Description", 200, 2022, "French", 1L, 1L);
+        Book bookToCreate = new Book(1L, "New Book", "Description", 200, 2022, "French", 1L, 1L);
         BookEntity bookEntity = new BookEntity(1L, "New Book", "Description", 200, 2022, "French", authorEntity, genreEntity);
         BookEntity savedEntity = new BookEntity(1L, "New Book", "Description", 200, 2022, "French", authorEntity, genreEntity);
         Book bookDto = new Book(1L, "New Book", "Description", 200, 2022, "French", 1L, 1L);
