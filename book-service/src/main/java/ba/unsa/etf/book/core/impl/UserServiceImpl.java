@@ -7,6 +7,8 @@ import ba.unsa.etf.book.core.validation.UserValidation;
 import ba.unsa.etf.book.dao.model.UserEntity;
 import ba.unsa.etf.book.dao.repository.UserRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -55,5 +57,27 @@ public class UserServiceImpl implements UserService {
     public void delete(Long id) {
         userValidation.exists(id);
         userRepository.deleteById(id);
+    }
+
+    @Override
+    public Page<User> getAllUsers(Pageable pageable) {
+        return userRepository.findAll(pageable).map(userMapper::entityToDto);
+    }
+
+    @Override
+    public List<User> createBatch(List<User> users) {
+        List<UserEntity> userEntities = users.stream().map(userMapper::dtoToEntity).collect(Collectors.toList());
+        userEntities = userRepository.saveAll(userEntities);
+        return userEntities.stream().map(userMapper::entityToDto).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<User> findByFirstNameAndLastName(String firstName, String lastName) {
+        return userRepository.findByFirstNameAndLastName(firstName, lastName).stream().map(userMapper::entityToDto).toList();
+    }
+
+    @Override
+    public User findByEmail(String email) {
+        return userMapper.entityToDto(userRepository.findByEmail(email));
     }
 }
