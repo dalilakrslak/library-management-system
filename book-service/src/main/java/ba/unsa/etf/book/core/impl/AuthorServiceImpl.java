@@ -65,4 +65,13 @@ public class AuthorServiceImpl implements AuthorService {
     public Page<Author> getAllAuthors(Pageable pageable) {
         return authorRepository.findAll(pageable).map(authorMapper::entityToDto);
     }
+
+    @Override
+    public List<Author> createBatch(List<Author> authors) {
+        List<AuthorEntity> entities = authors.stream()
+                .map(authorMapper::dtoToEntity)
+                .toList();
+        List<AuthorEntity> saved = authorRepository.saveAll(entities);
+        return saved.stream().map(authorMapper::entityToDto).toList();
+    }
 }

@@ -18,4 +18,6 @@ public interface AuthorService {
     void delete(Long id);
 
     Page<Author> getAllAuthors(Pageable pageable);
+
+    List<Author> createBatch(List<Author> authors);
 }

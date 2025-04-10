@@ -74,4 +74,12 @@ public class AuthorRest {
         Page<Author> authors = authorService.getAllAuthors(pageable);
         return ResponseEntity.ok(authors);
     }
+
+    @Operation(summary = "Batch create authors")
+    @PostMapping("/batch")
+    public ResponseEntity<List<Author>> createBatch(@RequestBody List<Author> authors) {
+        List<Author> createdAuthors = authorService.createBatch(authors);
+        return ResponseEntity.ok(createdAuthors);
+    }
+
 }
