@@ -6,6 +6,10 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -52,5 +56,35 @@ public class ReservationRest {
     public ResponseEntity<String> delete(@PathVariable Long id) {
         reservationService.delete(id);
         return ResponseEntity.ok("Reservation with ID " + id + " was deleted successfully.");
+    }
+
+    @Operation(summary = "Find reservations with pagination and sorting")
+    @GetMapping("/paginated")
+    public ResponseEntity<Page<Reservation>> findAllPaginated(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "reservationDate,asc") String[] sort
+    ) {
+        Sort sortOrder = Sort.by(
+                sort[1].equalsIgnoreCase("desc") ? Sort.Order.desc(sort[0]) : Sort.Order.asc(sort[0])
+        );
+        Pageable pageable = PageRequest.of(page, size, sortOrder);
+        Page<Reservation> reservations = reservationService.getAllReservations(pageable);
+        return ResponseEntity.ok(reservations);
+    }
+
+    @Operation(summary = "Batch create reservations")
+    @PostMapping("/batch")
+    public ResponseEntity<List<Reservation>> createBatch(@RequestBody List<Reservation> reservations) {
+        List<Reservation> createdReservations = reservationService.createBatch(reservations);
+        return ResponseEntity.ok(createdReservations);
+    }
+
+    @Operation(summary = "Find reservations by user ID")
+    @GetMapping("/search")
+    public ResponseEntity<List<Reservation>> findReservationsByUserId(
+            @Parameter(description = "ID of the user") @RequestParam Long userId) {
+        List<Reservation> reservations = reservationService.findReservationsByUserId(userId);
+        return reservations.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(reservations);
     }
 }

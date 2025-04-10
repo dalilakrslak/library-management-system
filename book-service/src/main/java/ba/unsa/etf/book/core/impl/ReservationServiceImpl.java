@@ -7,6 +7,8 @@ import ba.unsa.etf.book.core.validation.ReservationValidation;
 import ba.unsa.etf.book.dao.model.ReservationEntity;
 import ba.unsa.etf.book.dao.repository.ReservationRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -55,5 +57,23 @@ public class ReservationServiceImpl implements ReservationService {
     public void delete(Long id) {
         reservationValidation.exists(id);
         reservationRepository.deleteById(id);
+    }
+
+    @Override
+    public Page<Reservation> getAllReservations(Pageable pageable) {
+        return reservationRepository.findAll(pageable).map(reservationMapper::entityToDto);
+    }
+
+    @Override
+    public List<Reservation> createBatch(List<Reservation> reservations) {
+        List<ReservationEntity> entities = reservations.stream().map(reservationMapper::dtoToEntity).collect(Collectors.toList());
+        List<ReservationEntity> newReservations =  reservationRepository.saveAll(entities);
+        return newReservations.stream().map(reservationMapper::entityToDto).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Reservation> findReservationsByUserId(Long userId) {
+        List<ReservationEntity> entities = reservationRepository.findReservationsByUserId(userId);
+        return entities.stream().map(reservationMapper::entityToDto).collect(Collectors.toList());
     }
 }
