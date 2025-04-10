@@ -7,6 +7,8 @@ import ba.unsa.etf.book.core.validation.BookValidation;
 import ba.unsa.etf.book.dao.model.BookEntity;
 import ba.unsa.etf.book.dao.repository.BookRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -55,5 +57,23 @@ public class BookServiceImpl implements BookService {
     public void delete(Long id) {
         bookValidation.exists(id);
         bookRepository.deleteById(id);
+    }
+
+    @Override
+    public Page<Book> getAllBooks(Pageable pageable) {
+        return bookRepository.findAll(pageable).map(bookMapper::entityToDto);
+    }
+
+    @Override
+    public List<Book> createBatch(List<Book> books) {
+        List<BookEntity> bookEntities = books.stream().map(bookMapper::dtoToEntity).collect(Collectors.toList());
+        bookEntities.addAll(bookRepository.saveAll(bookEntities));
+        return bookEntities.stream().map(bookMapper::entityToDto).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Book> findBooksByAuthor(String authorName) {
+        List<BookEntity> bookEntities = bookRepository.findBooksByAuthor(authorName);
+        return bookEntities.stream().map(bookMapper::entityToDto).collect(Collectors.toList());
     }
 }
