@@ -1,6 +1,5 @@
 package ba.unsa.etf.book.core.impl;
 
-import ba.unsa.etf.book.api.model.Book;
 import ba.unsa.etf.book.api.model.BookVersion;
 import ba.unsa.etf.book.api.service.BookVersionService;
 import ba.unsa.etf.book.core.mapper.BookVersionMapper;

@@ -1,6 +1,5 @@
 package ba.unsa.etf.book.rest;
 
-import ba.unsa.etf.book.api.model.Book;
 import ba.unsa.etf.book.api.model.BookVersion;
 import ba.unsa.etf.book.api.service.BookVersionService;
 import io.swagger.v3.oas.annotations.Operation;

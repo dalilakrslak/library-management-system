@@ -1,6 +1,5 @@
 package ba.unsa.etf.book;
 
-import ba.unsa.etf.book.api.model.Author;
 import ba.unsa.etf.book.api.model.Book;
 import ba.unsa.etf.book.core.impl.BookServiceImpl;
 import ba.unsa.etf.book.core.mapper.BookMapper;

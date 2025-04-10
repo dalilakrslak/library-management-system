@@ -1,11 +1,9 @@
 package ba.unsa.etf.book;
 
-import ba.unsa.etf.book.api.model.Author;
 import ba.unsa.etf.book.api.model.Genre;
 import ba.unsa.etf.book.core.impl.GenreServiceImpl;
 import ba.unsa.etf.book.core.mapper.GenreMapper;
 import ba.unsa.etf.book.core.validation.GenreValidation;
-import ba.unsa.etf.book.dao.model.AuthorEntity;
 import ba.unsa.etf.book.dao.model.GenreEntity;
 import ba.unsa.etf.book.dao.repository.GenreRepository;
 import org.junit.jupiter.api.BeforeEach;

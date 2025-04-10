@@ -2,7 +2,6 @@ package ba.unsa.etf.book.dao.model;
 
 import java.io.Serializable;
 
-
 import jakarta.persistence.*;
 import lombok.*;
 

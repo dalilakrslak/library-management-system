@@ -1,6 +1,5 @@
 package ba.unsa.etf.book.api.service;
 
-import ba.unsa.etf.book.api.model.Book;
 import ba.unsa.etf.book.api.model.BookVersion;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

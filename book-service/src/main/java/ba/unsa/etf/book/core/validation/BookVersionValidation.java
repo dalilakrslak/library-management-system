@@ -1,7 +1,6 @@
 package ba.unsa.etf.book.core.validation;
 
 import ba.unsa.etf.book.core.exception.ValidationException;
-import ba.unsa.etf.book.dao.repository.BookRepository;
 import ba.unsa.etf.book.dao.repository.BookVersionRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;

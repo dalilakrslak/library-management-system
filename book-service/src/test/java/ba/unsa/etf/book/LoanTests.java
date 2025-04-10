@@ -1,6 +1,5 @@
 package ba.unsa.etf.book;
 
-import ba.unsa.etf.book.api.model.Book;
 import ba.unsa.etf.book.api.model.Loan;
 import ba.unsa.etf.book.core.impl.LoanServiceImpl;
 import ba.unsa.etf.book.core.mapper.LoanMapper;
@@ -15,7 +14,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
