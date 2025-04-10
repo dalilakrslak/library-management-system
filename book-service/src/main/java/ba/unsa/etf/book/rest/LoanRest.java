@@ -6,6 +6,10 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -52,5 +56,35 @@ public class LoanRest {
     public ResponseEntity<String> delete(@PathVariable Long id) {
         loanService.delete(id);
         return ResponseEntity.ok("Loan with ID " + id + " was deleted successfully.");
+    }
+
+    @Operation(summary = "Find loans with pagination and sorting")
+    @GetMapping("/paginated")
+    public ResponseEntity<Page<Loan>> findAllPaginated(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "loanDate,asc") String[] sort
+    ) {
+        Sort sortOrder = Sort.by(
+                sort[1].equalsIgnoreCase("desc") ? Sort.Order.desc(sort[0]) : Sort.Order.asc(sort[0])
+        );
+        Pageable pageable = PageRequest.of(page, size, sortOrder);
+        Page<Loan> loans = loanService.getAllLoans(pageable);
+        return ResponseEntity.ok(loans);
+    }
+
+    @Operation(summary = "Batch create loans")
+    @PostMapping("/batch")
+    public ResponseEntity<List<Loan>> createBatch(@RequestBody List<Loan> loans) {
+        List<Loan> createdLoans = loanService.createBatch(loans);
+        return ResponseEntity.ok(createdLoans);
+    }
+
+    @Operation(summary = "Find loans by user ID")
+    @GetMapping("/search")
+    public ResponseEntity<List<Loan>> findLoansByUserId(
+            @Parameter(description = "ID of the user") @RequestParam Long userId) {
+        List<Loan> loans = loanService.findLoansByUserId(userId);
+        return loans.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(loans);
     }
 }
