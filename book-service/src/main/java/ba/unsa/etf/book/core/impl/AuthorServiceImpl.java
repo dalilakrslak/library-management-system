@@ -7,6 +7,8 @@ import ba.unsa.etf.book.core.validation.AuthorValidation;
 import ba.unsa.etf.book.dao.model.AuthorEntity;
 import ba.unsa.etf.book.dao.repository.AuthorRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -57,5 +59,10 @@ public class AuthorServiceImpl implements AuthorService {
     public void delete(Long id) {
         authorValidation.exists(id);
         authorRepository.deleteById(id);
+    }
+
+    @Override
+    public Page<Author> getAllAuthors(Pageable pageable) {
+        return authorRepository.findAll(pageable).map(authorMapper::entityToDto);
     }
 }

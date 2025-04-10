@@ -6,6 +6,10 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -52,5 +56,22 @@ public class AuthorRest {
     public ResponseEntity<String> delete(@PathVariable Long id) {
         authorService.delete(id);
         return ResponseEntity.ok("Author with ID " + id + " was deleted successfully.");
+    }
+
+    @Operation(summary = "Find all authors with pagination and sorting")
+    @GetMapping("/paginated")
+    public ResponseEntity<Page<Author>> findAllPaginated(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "lastName,asc") String[] sort
+    ) {
+        Sort sortOrder = Sort.by(
+                sort[1].equalsIgnoreCase("desc") ?
+                        Sort.Order.desc(sort[0]) :
+                        Sort.Order.asc(sort[0])
+        );
+        Pageable pageable = PageRequest.of(page, size, sortOrder);
+        Page<Author> authors = authorService.getAllAuthors(pageable);
+        return ResponseEntity.ok(authors);
     }
 }
