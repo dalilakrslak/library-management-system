@@ -7,6 +7,8 @@ import ba.unsa.etf.book.core.validation.GenreValidation;
 import ba.unsa.etf.book.dao.model.GenreEntity;
 import ba.unsa.etf.book.dao.repository.GenreRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -55,5 +57,23 @@ public class GenreServiceImpl implements GenreService {
     public void delete(Long id) {
         genreValidation.exists(id);
         genreRepository.deleteById(id);
+    }
+
+    @Override
+    public Page<Genre> getAllGenres(Pageable pageable) {
+        return genreRepository.findAll(pageable).map(genreMapper::entityToDto);
+    }
+
+    @Override
+    public List<Genre> createBatch(List<Genre> genres) {
+        List<GenreEntity> entities = genres.stream().map(genreMapper::dtoToEntity).collect(Collectors.toList());
+        List<GenreEntity> newGenres = genreRepository.saveAll(entities);
+        return newGenres.stream().map(genreMapper::entityToDto).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Genre> findByName(String name) {
+        List<GenreEntity> entities = genreRepository.findByName(name);
+        return entities.stream().map(genreMapper::entityToDto).collect(Collectors.toList());
     }
 }

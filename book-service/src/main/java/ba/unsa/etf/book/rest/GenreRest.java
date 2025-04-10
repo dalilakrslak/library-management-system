@@ -6,6 +6,10 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -52,5 +56,37 @@ public class GenreRest {
     public ResponseEntity<String> delete(@PathVariable Long id) {
         genreService.delete(id);
         return ResponseEntity.ok("Genre with ID " + id + " was deleted successfully.");
+    }
+
+    @Operation(summary = "Find all genres with pagination and sorting")
+    @GetMapping("/paginated")
+    public ResponseEntity<Page<Genre>> findAllPaginated(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "name,asc") String[] sort
+    ) {
+        Sort sortOrder = Sort.by(
+                sort[1].equalsIgnoreCase("desc") ?
+                        Sort.Order.desc(sort[0]) :
+                        Sort.Order.asc(sort[0])
+        );
+        Pageable pageable = PageRequest.of(page, size, sortOrder);
+        Page<Genre> genres = genreService.getAllGenres(pageable);
+        return ResponseEntity.ok(genres);
+    }
+
+    @Operation(summary = "Batch create genres")
+    @PostMapping("/batch")
+    public ResponseEntity<List<Genre>> createBatch(@RequestBody List<Genre> genres) {
+        List<Genre> createdGenres = genreService.createBatch(genres);
+        return ResponseEntity.ok(createdGenres);
+    }
+
+    @Operation(summary = "Find genres by name")
+    @GetMapping("/search")
+    public ResponseEntity<List<Genre>> findByName(
+            @RequestParam String name) {
+        List<Genre> genres = genreService.findByName(name);
+        return ResponseEntity.ok(genres);
     }
 }
