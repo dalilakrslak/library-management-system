@@ -4,7 +4,6 @@ import ba.unsa.etf.book.api.model.Loan;
 import ba.unsa.etf.book.api.service.LoanService;
 import ba.unsa.etf.book.core.mapper.LoanMapper;
 import ba.unsa.etf.book.core.validation.LoanValidation;
-import ba.unsa.etf.book.dao.model.GenreEntity;
 import ba.unsa.etf.book.dao.model.LoanEntity;
 import ba.unsa.etf.book.dao.repository.LoanRepository;
 import lombok.AllArgsConstructor;
@@ -22,7 +21,6 @@ public class LoanServiceImpl implements LoanService {
     private final LoanRepository loanRepository;
     private final LoanMapper loanMapper;
     private final LoanValidation loanValidation;
-    private final LoanService loanService;
 
     @Override
     public List<Loan> findAll() {
@@ -69,8 +67,8 @@ public class LoanServiceImpl implements LoanService {
     @Override
     public List<Loan> createBatch(List<Loan> loans) {
         List<LoanEntity> entities = loans.stream().map(loanMapper::dtoToEntity).collect(Collectors.toList());
-        List<LoanEntity> newLoans = loanRepository.saveAll(entities);
-        return newLoans.stream().map(loanMapper::entityToDto).collect(Collectors.toList());
+        entities.addAll(loanRepository.saveAll(entities));
+        return entities.stream().map(loanMapper::entityToDto).collect(Collectors.toList());
     }
 
     @Override

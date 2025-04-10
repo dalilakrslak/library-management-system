@@ -67,8 +67,8 @@ public class ReservationServiceImpl implements ReservationService {
     @Override
     public List<Reservation> createBatch(List<Reservation> reservations) {
         List<ReservationEntity> entities = reservations.stream().map(reservationMapper::dtoToEntity).collect(Collectors.toList());
-        List<ReservationEntity> newReservations =  reservationRepository.saveAll(entities);
-        return newReservations.stream().map(reservationMapper::entityToDto).collect(Collectors.toList());
+        entities.addAll(reservationRepository.saveAll(entities));
+        return entities.stream().map(reservationMapper::entityToDto).collect(Collectors.toList());
     }
 
     @Override
