@@ -82,4 +82,20 @@ public class AuthorRest {
         return ResponseEntity.ok(createdAuthors);
     }
 
+    @Operation(summary = "Find authors by biography keyword")
+    @GetMapping("/search-by-biography")
+    public ResponseEntity<List<Author>> findByBiographyKeyword(
+            @RequestParam String keyword) {
+        List<Author> authors = authorService.findByBiographyKeyword(keyword);
+        return ResponseEntity.ok(authors);
+    }
+
+    @Operation(summary = "Find authors by criteria")
+    @GetMapping("/search")
+    public List<Author> findByCriteria(
+            @RequestParam(required = false) String firstName,
+            @RequestParam(required = false) String lastName,
+            @RequestParam(required = false) String biography) {
+        return authorService.searchAuthors(firstName, lastName, biography);
+    }
 }

@@ -74,4 +74,19 @@ public class AuthorServiceImpl implements AuthorService {
         List<AuthorEntity> saved = authorRepository.saveAll(entities);
         return saved.stream().map(authorMapper::entityToDto).toList();
     }
+
+    @Override
+    public List<Author> findByBiographyKeyword(String keyword) {
+        List<AuthorEntity> results = authorRepository.findByBiographyKeyword(keyword);
+        return results.stream().map(authorMapper::entityToDto).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Author> searchAuthors(String firstName, String lastName, String biography) {
+        List<AuthorEntity> authorEntities = authorRepository.searchAuthors(firstName, lastName, biography);
+
+        return authorEntities.stream()
+                .map(authorMapper::entityToDto)
+                .collect(Collectors.toList());
+    }
 }

@@ -20,4 +20,8 @@ public interface AuthorService {
     Page<Author> getAllAuthors(Pageable pageable);
 
     List<Author> createBatch(List<Author> authors);
+
+    List<Author> findByBiographyKeyword(String keyword);
+
+    List<Author> searchAuthors(String firstName, String lastName, String biography);
 }
