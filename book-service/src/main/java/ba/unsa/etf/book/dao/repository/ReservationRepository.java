@@ -7,9 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 
 public interface ReservationRepository extends JpaRepository<ReservationEntity, Long> {
+    @Query("SELECT r FROM ReservationEntity r JOIN FETCH r.bookVersion JOIN FETCH r.user WHERE r.user.id = :userId")
     List<ReservationEntity> findReservationsByUserId(Long userId);
 
-    @Override
-    @Query("SELECT r FROM ReservationEntity r JOIN FETCH r.user JOIN FETCH r.bookVersion")
-    List<ReservationEntity> findAll();
 }

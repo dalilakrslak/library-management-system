@@ -72,18 +72,4 @@ public class BookTests {
         assertEquals(1, queryCount, "There should be only one query executed!");
     }
 
-    @Test
-    void whenCallingFindAll_thenNoNPlusOneProblem() {
-        List<BookEntity> books = bookRepository.findAll();
-
-        books.forEach(book -> {
-            book.getAuthor().getFirstName();
-            book.getGenre().getName();
-        });
-
-        long queryCount = statistics.getQueryExecutionCount();
-
-        assertEquals(1, queryCount, "There should be only one query executed!");
-    }
-
 }

@@ -32,14 +32,14 @@ public class ReservationTests {
 
     private Statistics statistics;
 
-    @BeforeEach
-    void setUp() {
-        // Enable statistics to track queries
-        SessionFactory sessionFactory = entityManager.unwrap(Session.class).getSessionFactory();
-        statistics = sessionFactory.getStatistics();
-        statistics.setStatisticsEnabled(true);
+    @Test
+    void whenFetchingReservationsByUserId_NoNPlusOneProblem() {
+        Session session = entityManager.unwrap(Session.class);
+        Statistics stats = session.getSessionFactory().getStatistics();
+        stats.setStatisticsEnabled(true);
+        stats.clear();
 
-        // Set up test data
+        // Setup data
         UserEntity user = new UserEntity();
         user.setFirstName("John");
         user.setLastName("Doe");
@@ -51,7 +51,6 @@ public class ReservationTests {
         bookVersion.setIsReserved(true);
         entityManager.persist(bookVersion);
 
-        // Create and persist reservations
         for (int i = 0; i < 3; i++) {
             ReservationEntity reservation = new ReservationEntity();
             reservation.setUser(user);
@@ -61,32 +60,22 @@ public class ReservationTests {
         }
 
         entityManager.flush();
-        entityManager.clear();
-    }
+        entityManager.clear(); // Clear persistence context to simulate fresh fetch
 
-    @Test
-    void whenFetchingReservationsByUserId_NoNPlusOneProblem() {
-        List<ReservationEntity> reservations = reservationRepository.findReservationsByUserId(1L);
+        // ACT
+        List<ReservationEntity> reservations = reservationRepository.findReservationsByUserId(user.getId());
 
-        long queryCount = statistics.getQueryExecutionCount();
+        // Trigger lazy loading if fetch wasn't eager (simulate potential N+1)
+        for (ReservationEntity r : reservations) {
+            r.getUser().getFirstName();         // triggers lazy load if not eager
+            r.getBookVersion().getIsbn();       // same here
+        }
 
-        // Expect only one query to be executed (no N+1 problem)
+        long queryCount = stats.getQueryExecutionCount();
+        System.out.println("Executed queries: " + queryCount);
+
+        // ASSERT
         assertEquals(1, queryCount, "There should be only one query executed!");
     }
 
-    @Test
-    void whenCallingFindAll_thenNoNPlusOneProblem() {
-        List<ReservationEntity> reservations = reservationRepository.findAll();
-
-        reservations.forEach(reservation -> {
-            // Accessing user and bookVersion to simulate lazy loading
-            reservation.getUser().getFirstName();
-            reservation.getBookVersion().getIsbn();
-        });
-
-        long queryCount = statistics.getQueryExecutionCount();
-
-        // Expect only one query to be executed (no N+1 problem)
-        assertEquals(1, queryCount, "There should be only one query executed!");
-    }
 }

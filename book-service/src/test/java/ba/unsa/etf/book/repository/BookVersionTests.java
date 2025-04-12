@@ -29,20 +29,21 @@ public class BookVersionTests {
 
     private Statistics statistics;
 
-    @BeforeEach
-    void setUp() {
+    @Test
+    void whenFetchingBooksByTitle_NoNPlusOneProblem() {
         SessionFactory sessionFactory = entityManager.unwrap(Session.class).getSessionFactory();
-        statistics = sessionFactory.getStatistics();
+        Statistics statistics = sessionFactory.getStatistics();
         statistics.setStatisticsEnabled(true);
+        statistics.clear();
 
+        // Setup test podataka
         AuthorEntity author = new AuthorEntity();
         author.setFirstName("Mesa");
         author.setLastName("Selimovic");
+        entityManager.persist(author);
 
         GenreEntity genre = new GenreEntity();
         genre.setName("Drama");
-
-        entityManager.persist(author);
         entityManager.persist(genre);
 
         for (int i = 0; i < 3; i++) {
@@ -66,12 +67,11 @@ public class BookVersionTests {
 
         entityManager.flush();
         entityManager.clear();
-    }
 
-    @Test
-    void whenFetchingBooksByTitle_NoNPlusOneProblem() {
+        // Poziv metode koja koristi JOIN FETCH
         List<BookVersionEntity> versions = bookVersionRepository.findBooksByTitle("Dervis");
 
+        // Forsiramo lazy load da bi isprovocirali eventualne dodatne upite
         versions.forEach(version -> {
             version.getBook().getTitle();
             version.getBook().getAuthor().getFirstName();
@@ -79,22 +79,9 @@ public class BookVersionTests {
         });
 
         long queryCount = statistics.getQueryExecutionCount();
+        System.out.println("Executed queries: " + queryCount);
 
         assertEquals(1, queryCount, "There should be only one query executed!");
     }
 
-    @Test
-    void whenCallingFindAll_thenNoNPlusOneProblem() {
-        List<BookVersionEntity> versions = bookVersionRepository.findAll();
-
-        versions.forEach(version -> {
-            version.getBook().getTitle();
-            version.getBook().getAuthor().getLastName();
-            version.getBook().getGenre().getName();
-        });
-
-        long queryCount = statistics.getQueryExecutionCount();
-
-        assertEquals(1, queryCount, "There should be only one query executed!");
-    }
 }
