@@ -1,4 +1,4 @@
-package ba.unsa.etf.book;
+package ba.unsa.etf.book.service;
 
 import ba.unsa.etf.book.api.model.Reservation;
 import ba.unsa.etf.book.core.impl.ReservationServiceImpl;
