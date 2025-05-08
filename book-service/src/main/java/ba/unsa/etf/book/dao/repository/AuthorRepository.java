@@ -7,7 +7,6 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-
 public interface AuthorRepository extends JpaRepository<AuthorEntity, Long> {
     boolean existsByFirstNameAndLastName(String firstName, String lastName);
 
