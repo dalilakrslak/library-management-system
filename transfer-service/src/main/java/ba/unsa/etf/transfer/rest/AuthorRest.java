@@ -1,0 +1,56 @@
+package ba.unsa.etf.transfer.rest;
+
+import ba.unsa.etf.transfer.api.model.Author;
+import ba.unsa.etf.transfer.api.service.AuthorService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.AllArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@Tag(name = "author", description = "Author API")
+@RestController
+@RequestMapping(value = "/author")
+@AllArgsConstructor
+public class AuthorRest {
+    private AuthorService authorService;
+
+    @Operation(summary = "Find authors")
+    @GetMapping
+    public List<Author> findAll() {
+        return authorService.findAll();
+    }
+
+    @Operation(summary = "Find author by ID")
+    @GetMapping(value = "{id}")
+    public ResponseEntity<Author> findById(
+            @Parameter(required = true, description = "ID of the author", name = "id") @PathVariable Long id) {
+        Author author = authorService.findById(id);
+        return ResponseEntity.ok(author);
+    }
+
+    @Operation(summary = "Create author")
+    @PostMapping
+    public ResponseEntity<Author> create(@RequestBody Author author) {
+        Author createdAuthor = authorService.create(author);
+        return ResponseEntity.ok(createdAuthor);
+    }
+
+    @Operation(summary = "Update author")
+    @PutMapping("/{id}")
+    public ResponseEntity<Author> update(@PathVariable Long id, @RequestBody Author author) {
+        author.setId(id);
+        Author updatedAuthor = authorService.update(author);
+        return ResponseEntity.ok(updatedAuthor);
+    }
+
+    @Operation(summary = "Delete author")
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> delete(@PathVariable Long id) {
+        authorService.delete(id);
+        return ResponseEntity.ok("Author with ID " + id + " was deleted successfully.");
+    }
+}
