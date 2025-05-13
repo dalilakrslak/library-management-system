@@ -1,4 +1,0 @@
--------------------------------------------------------------------------------
-Test set: ba.unsa.etf.transfer.TransferTests
--------------------------------------------------------------------------------
-Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.099 s -- in ba.unsa.etf.transfer.TransferTests
