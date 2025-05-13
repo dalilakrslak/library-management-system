@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: ba.unsa.etf.eureka.EurekaApplicationTests
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 7.502 s -- in ba.unsa.etf.eureka.EurekaApplicationTests

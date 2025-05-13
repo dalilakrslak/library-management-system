@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: ba.unsa.etf.book.repository.BookTests
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 7.631 s - in ba.unsa.etf.book.repository.BookTests
