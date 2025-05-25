@@ -1,6 +1,8 @@
 package ba.unsa.etf.book.rest;
 
 import ba.unsa.etf.book.api.model.Reservation;
+import ba.unsa.etf.book.api.model.ReservationWithUser;
+import ba.unsa.etf.book.api.model.User;
 import ba.unsa.etf.book.api.service.ReservationService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -111,4 +113,21 @@ class ReservationRestTest {
         assertEquals(1, result.size());
         assertEquals(100L, result.get(0).getUserId());
     }
+
+    @Test
+    void getAllReservationsWithUserInfo_ShouldReturnCombinedObjects() {
+        Reservation reservation = new Reservation(1L, 100L, "978-99955-42-10-4", LocalDateTime.now());
+        User user = new User(100L, "Test", "Korisnik", "test@example.com", "061/220550");
+        ReservationWithUser combined = new ReservationWithUser(reservation, user);
+
+        when(reservationService.getAllReservationsWithUserInfo()).thenReturn(List.of(combined));
+
+        ResponseEntity<List<ReservationWithUser>> response = reservationRest.getAllReservationsWithUserInfo();
+
+        assertNotNull(response.getBody());
+        assertEquals(1, response.getBody().size());
+        assertEquals("Test", response.getBody().get(0).getUser().getFirstName());
+        assertEquals("978-99955-42-10-4", response.getBody().get(0).getReservation().getBookVersion());
+    }
+
 }

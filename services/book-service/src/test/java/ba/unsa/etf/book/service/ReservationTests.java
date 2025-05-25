@@ -1,6 +1,8 @@
 package ba.unsa.etf.book.service;
 
 import ba.unsa.etf.book.api.model.Reservation;
+import ba.unsa.etf.book.api.model.ReservationWithUser;
+import ba.unsa.etf.book.api.model.User;
 import ba.unsa.etf.book.core.impl.ReservationServiceImpl;
 import ba.unsa.etf.book.core.mapper.ReservationMapper;
 import ba.unsa.etf.book.core.validation.ReservationValidation;
@@ -14,9 +16,11 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -33,18 +37,19 @@ public class ReservationTests {
     @Mock
     private ReservationValidation reservationValidation;
 
+    @Mock
+    private RestTemplate restTemplate;
+
     @InjectMocks
     private ReservationServiceImpl reservationService;
 
     private ReservationEntity reservationEntity;
     private Reservation reservation;
-    private BookVersionEntity bookVersionEntity;
-    private BookEntity bookEntity;
 
     @BeforeEach
     void setUp() {
-        bookEntity = new BookEntity(1L, "Title", "Description", 300, 2022, "English", null, null);
-        bookVersionEntity = new BookVersionEntity("123-456-789", bookEntity, false, false);
+        BookEntity bookEntity = new BookEntity(1L, "Title", "Description", 300, 2022, "English", null, null);
+        BookVersionEntity bookVersionEntity = new BookVersionEntity("123-456-789", bookEntity, false, false);
         reservationEntity = new ReservationEntity(1L, 1L, bookVersionEntity, LocalDate.now());
         reservation = new Reservation(1L, 2L, "123-456-789", LocalDateTime.now());
     }
@@ -84,5 +89,24 @@ public class ReservationTests {
 
         verify(reservationValidation).exists(id);
         verify(reservationRepository).deleteById(id);
+    }
+
+    @Test
+    void testGetAllReservationsWithUserInfo() {
+        ReservationEntity entity = reservationEntity;
+        User user = new User(1L, "Dalila", "Test", "dalila@test.com", "061/220550");
+        Reservation dto = reservation;
+
+        when(reservationRepository.findAll()).thenReturn(List.of(entity));
+        when(reservationMapper.entityToDto(entity)).thenReturn(dto);
+        when(restTemplate.getForObject("http://library-service/user/" + entity.getUserId(), User.class))
+                .thenReturn(user);
+
+        List<ReservationWithUser> result = reservationService.getAllReservationsWithUserInfo();
+
+        assertNotNull(result);
+        assertEquals(1, result.size());
+        assertEquals(user.getFirstName(), result.get(0).getUser().getFirstName());
+        assertEquals(dto.getId(), result.get(0).getReservation().getId());
     }
 }
