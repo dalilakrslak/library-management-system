@@ -1,0 +1,19 @@
+server:
+  port: 8084
+
+spring:
+  datasource:
+    url: jdbc:postgresql://postgres-db:5432/library
+    username: postgres
+    password: dalila
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://eureka-server:8761/eureka/
+    register-with-eureka: true
+    fetch-registry: true

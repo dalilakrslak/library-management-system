@@ -1,0 +1,3 @@
+CREATE DATABASE book;
+CREATE DATABASE transfer;
+CREATE DATABASE library;

@@ -1,0 +1,100 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:16
+    container_name: postgres-db
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: dalila
+    networks:
+      - backend
+    volumes:
+      - ./data:/docker-entrypoint-initdb.d
+
+  config-server:
+    build: ./config-server
+    container_name: config-server
+    ports:
+      - "8888:8888"
+    volumes:
+      - ./config-repo:/config-repo
+    networks:
+      - backend
+    depends_on:
+      - postgres
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8888/actuator/health" ]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  eureka-server:
+    build: ./eureka
+    container_name: eureka-server
+    ports:
+      - "8761:8761"
+    networks:
+      - backend
+    depends_on:
+      - postgres
+      - config-server
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://eureka-server:8761"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  book-service:
+    build: ./services/book-service
+    container_name: book-service
+    ports:
+      - "8082:8082"
+    networks:
+      - backend
+    depends_on:
+      postgres:
+        condition: service_started
+      eureka-server:
+        condition: service_healthy
+      config-server:
+        condition: service_healthy
+
+  transfer-service:
+    build: ./services/transfer-service
+    container_name: transfer-service
+    ports:
+      - "8083:8083"
+    networks:
+      - backend
+    depends_on:
+      postgres:
+        condition: service_started
+      eureka-server:
+        condition: service_healthy
+      config-server:
+        condition: service_healthy
+
+  library-service:
+    build: ./services/library-service
+    container_name: library-service
+    ports:
+      - "8084:8084"
+    networks:
+      - backend
+    depends_on:
+      postgres:
+        condition: service_started
+      eureka-server:
+        condition: service_healthy
+      config-server:
+        condition: service_healthy
+
+volumes:
+  pgdata:
+
+networks:
+  backend:
