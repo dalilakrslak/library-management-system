@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Data
@@ -18,17 +19,18 @@ public class Loan implements Serializable {
     private Long id;
 
     @Schema(description = "User ID")
+    @JsonIgnore
     private Long userId;
 
     @Schema(description = "ISBN")
     private String bookVersion;
 
     @Schema(description = "Loan date")
-    private LocalDateTime loanDate;
+    private LocalDate loanDate;
 
     @Schema(description = "Due date")
-    private LocalDateTime dueDate;
+    private LocalDate dueDate;
 
     @Schema(description = "Date when the book is returned")
-    private LocalDateTime returnDate;
+    private LocalDate returnDate;
 }

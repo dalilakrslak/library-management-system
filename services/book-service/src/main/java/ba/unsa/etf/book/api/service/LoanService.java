@@ -1,6 +1,8 @@
 package ba.unsa.etf.book.api.service;
 
 import ba.unsa.etf.book.api.model.Loan;
+import ba.unsa.etf.book.api.model.LoanWithUser;
+import ba.unsa.etf.book.api.model.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -22,4 +24,8 @@ public interface LoanService {
     List<Loan> createBatch(List<Loan> loans);
 
     List<Loan> findLoansByUserId(Long userId);
+
+    List<LoanWithUser> getAllLoansWithUserInfo();
+
+    User getUserByLoanId(Long loanId);
 }

@@ -9,4 +9,6 @@ import java.util.List;
 public interface BookVersionRepository extends JpaRepository<BookVersionEntity, String> {
     @Query("FROM BookVersionEntity b WHERE b.book.title LIKE %:title%")
     List<BookVersionEntity> findBooksByTitle(String title);
+
+    List<BookVersionEntity> findByBookId(Long bookId);
 }

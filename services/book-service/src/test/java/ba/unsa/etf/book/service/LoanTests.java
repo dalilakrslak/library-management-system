@@ -47,9 +47,9 @@ public class LoanTests {
     void setUp() {
         LocalDate now = LocalDate.now();
         bookEntity = new BookEntity(1L, "Title", "Description", 300, 2022, "English", null, null);
-        bookVersionEntity = new BookVersionEntity("123-456-789", bookEntity, false, false);
+        bookVersionEntity = new BookVersionEntity("123-456-789", bookEntity, false, false, 1L);
         loanEntity = new LoanEntity(1L, 1L, bookVersionEntity, now, now.plusDays(14), null);
-        loanDto = new Loan(1L, 1L, "1234567890", LocalDateTime.now(), LocalDateTime.now().plusDays(14), null);
+        loanDto = new Loan(1L, 1L, "1234567890", LocalDate.now(), LocalDate.now().plusDays(14), null);
     }
 
     @Test
@@ -101,11 +101,11 @@ public class LoanTests {
     @Test
     void testCreate() {
         bookEntity = new BookEntity(1L, "Title", "Description", 300, 2022, "English", null, null);
-        bookVersionEntity = new BookVersionEntity("123-456-789", bookEntity, false, false);
-        Loan loanToCreate = new Loan(1L, 1L, "1234567890", LocalDateTime.now(), LocalDateTime.now().plusDays(14), null);
+        bookVersionEntity = new BookVersionEntity("123-456-789", bookEntity, false, false, 1L);
+        Loan loanToCreate = new Loan(1L, 1L, "1234567890", LocalDate.now(), LocalDate.now().plusDays(14), null);
         LoanEntity loanEntity = new LoanEntity(1L, 1L, bookVersionEntity, LocalDate.now(), LocalDate.now().plusDays(14), null);
         LoanEntity savedEntity = new LoanEntity(1L, 1L, bookVersionEntity, LocalDate.now(), LocalDate.now().plusDays(14), null);
-        Loan loanDto = new Loan(1L, 1L, "1234567890", LocalDateTime.now(), LocalDateTime.now().plusDays(14), null);
+        Loan loanDto = new Loan(1L, 1L, "1234567890", LocalDate.now(), LocalDate.now().plusDays(14), null);
 
         when(loanMapper.dtoToEntity(loanToCreate)).thenReturn(loanEntity);
         when(loanRepository.save(loanEntity)).thenReturn(savedEntity);

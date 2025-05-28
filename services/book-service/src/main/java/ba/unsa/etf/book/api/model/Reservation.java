@@ -7,7 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Data
 @AllArgsConstructor
@@ -19,11 +19,12 @@ public class Reservation implements Serializable {
     private Long id;
 
     @Schema(description = "User ID")
+    @JsonIgnore
     private Long userId;
 
     @Schema(description = "ISBN")
     private String bookVersion;
 
     @Schema(description = "Reservation date")
-    private LocalDateTime reservationDate;
+    private LocalDate reservationDate;
 }

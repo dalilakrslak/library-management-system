@@ -40,7 +40,7 @@ public class BookVersionTests {
     @BeforeEach
     void setUp() {
         bookEntity = new BookEntity(1L, "Title", "Description", 300, 2022, "English", null, null);
-        bookVersionEntity = new BookVersionEntity("123-456-789", bookEntity, false, false);
+        bookVersionEntity = new BookVersionEntity("123-456-789", bookEntity, false, false, 1L);
         bookVersion = new BookVersion();
         bookVersion.setIsbn("123-456-789");
         bookVersion.setIsCheckedOut(false);

@@ -1,6 +1,9 @@
 package ba.unsa.etf.book.rest;
 
 import ba.unsa.etf.book.api.model.Loan;
+import ba.unsa.etf.book.api.model.LoanWithUser;
+import ba.unsa.etf.book.api.model.ReservationWithUser;
+import ba.unsa.etf.book.api.model.User;
 import ba.unsa.etf.book.api.service.LoanService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -86,5 +89,19 @@ public class LoanRest {
             @Parameter(description = "ID of the user") @RequestParam Long userId) {
         List<Loan> loans = loanService.findLoansByUserId(userId);
         return loans.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(loans);
+    }
+
+    @Operation(summary = "Find all loans with user info")
+    @GetMapping("/all-with-users")
+    public ResponseEntity<List<LoanWithUser>> getAllLoansWithUserInfo() {
+        List<LoanWithUser> result = loanService.getAllLoansWithUserInfo();
+        return ResponseEntity.ok(result);
+    }
+
+    @Operation(summary = "Get user info for loan")
+    @GetMapping("/user-by-loan")
+    public ResponseEntity<User> getUserByLoanId(@RequestParam Long loanId) {
+        User user = loanService.getUserByLoanId(loanId);
+        return user != null ? ResponseEntity.ok(user) : ResponseEntity.notFound().build();
     }
 }

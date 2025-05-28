@@ -38,7 +38,6 @@ public class BookVersionTests {
         statistics.setStatisticsEnabled(true);
         statistics.clear();
 
-        // Setup test podataka
         AuthorEntity author = new AuthorEntity();
         author.setFirstName("Mesa");
         author.setLastName("Selimovic");
@@ -70,10 +69,8 @@ public class BookVersionTests {
         entityManager.flush();
         entityManager.clear();
 
-        // Poziv metode koja koristi JOIN FETCH
         List<BookVersionEntity> versions = bookVersionRepository.findBooksByTitle("Dervis");
 
-        // Forsiramo lazy load da bi isprovocirali eventualne dodatne upite
         versions.forEach(version -> {
             version.getBook().getTitle();
             version.getBook().getAuthor().getFirstName();

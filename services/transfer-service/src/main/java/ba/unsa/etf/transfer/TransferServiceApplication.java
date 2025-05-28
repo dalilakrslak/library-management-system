@@ -13,15 +13,6 @@ import java.util.Date;
 @SpringBootApplication
 @AllArgsConstructor
 public class TransferServiceApplication  implements CommandLineRunner {
-	private AuthorRepository authorRepository;
-
-	private BookRepository bookRepository;
-
-	private BookVersionRepository bookVersionRepository;
-
-	private GenreRepository genreRepository;
-
-	private LibraryRepository libraryRepository;
 
 	private TransferRepository transferRepository;
 
@@ -31,24 +22,10 @@ public class TransferServiceApplication  implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) {
-		AuthorEntity author = new AuthorEntity(null, "Ivo", "Andrić", "Dobitnik Nobelove nagrade za književnost.");
-		authorRepository.save(author);
-
-		GenreEntity genre = new GenreEntity(null, "Roman");
-		genreRepository.save(genre);
-
-		BookEntity book = new BookEntity(null, "Na Drini ćuprija", "Istorijski roman o viševekovnoj istoriji mosta.", 314, "1945", "Srpski", author, genre);
-		bookRepository.save(book);
-
-		LibraryEntity library1 = new LibraryEntity(null, "Nacionalna biblioteka", "Sarajevo, BiH", "+387 33 123 456");
-		LibraryEntity library2 = new LibraryEntity(null, "Gradska biblioteka", "Mostar, BiH", "+387 36 654 321");
-		libraryRepository.save(library1);
-		libraryRepository.save(library2);
-
-		BookVersionEntity bookVersion = new BookVersionEntity("978-86-123-4567-8", book, library1, false, false);
-		bookVersionRepository.save(bookVersion);
-
-		TransferEntity transfer = new TransferEntity(null, bookVersion, library1, library2, LocalDate.now());
+		TransferEntity transfer = new TransferEntity(null, "97812341002", 1L, 2L, null);
 		transferRepository.save(transfer);
+
+		TransferEntity transfer2 = new TransferEntity(null, "97812341005", 2L, 3L, LocalDate.now());
+		transferRepository.save(transfer2);
 	}
 }

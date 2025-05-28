@@ -20,4 +20,7 @@ public class BookVersion implements Serializable {
 
     @Schema(description = "Book ID")
     private Long bookId;
+
+    @Schema(description = "Library ID")
+    private Long libraryId;
 }

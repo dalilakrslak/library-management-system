@@ -39,7 +39,7 @@ class TransferTests {
 
     @BeforeEach
     void setUp() {
-        transfer = new Transfer(1L, 123456789L, 1L, 2L, LocalDate.now());
+        transfer = new Transfer(1L, "123456789", 1L, 2L, LocalDate.now());
         transferEntity = new TransferEntity(1L, null, null, null, LocalDate.now());
     }
 

@@ -14,6 +14,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -39,7 +40,7 @@ class ReservationRestTest {
                 1L,
                 100L,
                 "978-99955-42-10-4",
-                LocalDateTime.of(2024, 5, 8, 12, 0)
+                LocalDate.of(2024, 5, 8)
         );
         reservations = List.of(reservation);
     }
@@ -98,11 +99,11 @@ class ReservationRestTest {
 
     @Test
     void update_ShouldReturnUpdatedReservation() {
-        reservation.setReservationDate(LocalDateTime.of(2024, 5, 9, 14, 0));
+        reservation.setReservationDate(LocalDate.of(2024, 5, 9));
         when(reservationService.update(any(Reservation.class))).thenReturn(reservation);
         Reservation result = reservationRest.update(1L, reservation).getBody();
         assertNotNull(result);
-        assertEquals("2024-05-09T14:00", result.getReservationDate().toString().substring(0, 16));
+        assertEquals("2024-05-09", result.getReservationDate().toString());
     }
 
     @Test
@@ -116,7 +117,7 @@ class ReservationRestTest {
 
     @Test
     void getAllReservationsWithUserInfo_ShouldReturnCombinedObjects() {
-        Reservation reservation = new Reservation(1L, 100L, "978-99955-42-10-4", LocalDateTime.now());
+        Reservation reservation = new Reservation(1L, 100L, "978-99955-42-10-4", LocalDate.now());
         User user = new User(100L, "Test", "Korisnik", "test@example.com", "061/220550");
         ReservationWithUser combined = new ReservationWithUser(reservation, user);
 

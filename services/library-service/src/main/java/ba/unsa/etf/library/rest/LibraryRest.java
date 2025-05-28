@@ -20,8 +20,9 @@ public class LibraryRest {
 
     @Operation(summary = "Find all libraries")
     @GetMapping
-    public List<Library> findAll() {
-        return libraryService.findAll();
+    public ResponseEntity<List<Library>> findAll() {
+        List<Library> libraries = libraryService.findAll();
+        return ResponseEntity.ok(libraries);
     }
 
     @Operation(summary = "Find library by ID")

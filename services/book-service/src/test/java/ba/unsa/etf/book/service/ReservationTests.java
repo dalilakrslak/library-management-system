@@ -49,9 +49,9 @@ public class ReservationTests {
     @BeforeEach
     void setUp() {
         BookEntity bookEntity = new BookEntity(1L, "Title", "Description", 300, 2022, "English", null, null);
-        BookVersionEntity bookVersionEntity = new BookVersionEntity("123-456-789", bookEntity, false, false);
+        BookVersionEntity bookVersionEntity = new BookVersionEntity("123-456-789", bookEntity, false, false, 1L);
         reservationEntity = new ReservationEntity(1L, 1L, bookVersionEntity, LocalDate.now());
-        reservation = new Reservation(1L, 2L, "123-456-789", LocalDateTime.now());
+        reservation = new Reservation(1L, 2L, "123-456-789", LocalDate.now());
     }
 
     @Test

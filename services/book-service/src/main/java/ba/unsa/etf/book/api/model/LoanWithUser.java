@@ -8,11 +8,11 @@ import java.io.Serializable;
 
 @Data
 @AllArgsConstructor
-public class ReservationWithUser implements Serializable {
+public class LoanWithUser implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    @Schema(description = "Reservation object")
-    private Reservation reservation;
+    @Schema(description = "Loan object")
+    private Loan loan;
 
     @Schema(description = "User object")
     private User user;

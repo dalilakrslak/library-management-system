@@ -1,16 +1,18 @@
 package ba.unsa.etf.book.core.impl;
 
-import ba.unsa.etf.book.api.model.Loan;
+import ba.unsa.etf.book.api.model.*;
 import ba.unsa.etf.book.api.service.LoanService;
 import ba.unsa.etf.book.core.mapper.LoanMapper;
 import ba.unsa.etf.book.core.validation.LoanValidation;
 import ba.unsa.etf.book.dao.model.LoanEntity;
+import ba.unsa.etf.book.dao.model.ReservationEntity;
 import ba.unsa.etf.book.dao.repository.LoanRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -21,6 +23,7 @@ public class LoanServiceImpl implements LoanService {
     private final LoanRepository loanRepository;
     private final LoanMapper loanMapper;
     private final LoanValidation loanValidation;
+    private final RestTemplate restTemplate;
 
     @Override
     public List<Loan> findAll() {
@@ -75,5 +78,26 @@ public class LoanServiceImpl implements LoanService {
     public List<Loan> findLoansByUserId(Long userId) {
         List<LoanEntity> entities = loanRepository.findByUserId(userId);
         return entities.stream().map(loanMapper::entityToDto).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<LoanWithUser> getAllLoansWithUserInfo() {
+        List<LoanEntity> entities = loanRepository.findAll();
+
+        return entities.stream().map(entity -> {
+            String url = "http://library-service/user/" + entity.getUserId();
+            User user = restTemplate.getForObject(url, User.class);
+
+            Loan loan = loanMapper.entityToDto(entity);
+            return new LoanWithUser(loan, user);
+        }).collect(Collectors.toList());
+    }
+
+    @Override
+    public User getUserByLoanId(Long loanId) {
+        Loan loan = loanRepository.findById(loanId).map(loanMapper::entityToDto).orElse(null);
+        String url = "http://library-service/user/" + loan.getUserId();
+
+        return restTemplate.getForObject(url, User.class);
     }
 }

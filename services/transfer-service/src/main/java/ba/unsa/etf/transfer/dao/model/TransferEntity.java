@@ -17,17 +17,14 @@ public class TransferEntity implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "book_isbn")
-    private BookVersionEntity bookVersion;
+    @Column(name = "book_isbn")
+    private String bookVersion;
 
-    @ManyToOne
-    @JoinColumn(name = "library_from")
-    private LibraryEntity libraryFrom;
+    @Column(name = "library_from")
+    private Long libraryFrom;
 
-    @ManyToOne
-    @JoinColumn(name = "library_to")
-    private LibraryEntity libraryTo;
+    @Column(name = "library_to")
+    private Long libraryTo;
 
     @Column(name = "transfer_date")
     private LocalDate transferDate;

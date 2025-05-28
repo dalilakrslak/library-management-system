@@ -2,6 +2,7 @@ package ba.unsa.etf.book.api.service;
 
 import ba.unsa.etf.book.api.model.Reservation;
 import ba.unsa.etf.book.api.model.ReservationWithUser;
+import ba.unsa.etf.book.api.model.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -25,4 +26,6 @@ public interface ReservationService {
     List<Reservation> findReservationsByUserId(Long userId);
 
     List<ReservationWithUser> getAllReservationsWithUserInfo();
+
+    User getUserByReservationId(Long reservationId);
 }

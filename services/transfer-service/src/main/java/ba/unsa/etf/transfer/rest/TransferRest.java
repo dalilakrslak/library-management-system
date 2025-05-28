@@ -2,6 +2,7 @@ package ba.unsa.etf.transfer.rest;
 
 import ba.unsa.etf.transfer.api.model.Transfer;
 import ba.unsa.etf.transfer.api.service.TransferService;
+import ba.unsa.etf.transfer.dao.model.TransferEntity;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -53,4 +54,12 @@ public class TransferRest {
         transferService.delete(id);
         return ResponseEntity.ok("Transfer with ID " + id + " was deleted successfully.");
     }
+
+    @Operation(summary = "Get transfers for book versions")
+    @GetMapping("/by-book-version")
+    public ResponseEntity<List<Transfer>> getTransfersByBookVersion(@RequestParam List<String> bookVersions) {
+        List<Transfer> transfers = transferService.findByBookVersionIn(bookVersions);
+        return ResponseEntity.ok(transfers);
+    }
+
 }

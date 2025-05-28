@@ -2,6 +2,7 @@ package ba.unsa.etf.book.rest;
 
 import ba.unsa.etf.book.api.model.Reservation;
 import ba.unsa.etf.book.api.model.ReservationWithUser;
+import ba.unsa.etf.book.api.model.User;
 import ba.unsa.etf.book.api.service.ReservationService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -94,6 +95,13 @@ public class ReservationRest {
     public ResponseEntity<List<ReservationWithUser>> getAllReservationsWithUserInfo() {
         List<ReservationWithUser> result = reservationService.getAllReservationsWithUserInfo();
         return ResponseEntity.ok(result);
+    }
+
+    @Operation(summary = "Get user info for reservation")
+    @GetMapping("/user-by-reservation")
+    public ResponseEntity<User> getUserByReservationId(@RequestParam Long reservationId) {
+        User user = reservationService.getUserByReservationId(reservationId);
+        return user != null ? ResponseEntity.ok(user) : ResponseEntity.notFound().build();
     }
 
 }

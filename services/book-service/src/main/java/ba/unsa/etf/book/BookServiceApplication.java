@@ -8,6 +8,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @SpringBootApplication
 @AllArgsConstructor
@@ -40,16 +41,29 @@ public class BookServiceApplication implements CommandLineRunner {
 		BookEntity book = new BookEntity(null, "Na Drini ćuprija", "Roman o životu u Bosni pod Osmanlijama.",312, 1945, "bosanski", author, genre);
 		bookRepository.save(book);
 
-		BookVersionEntity bookVersion = new BookVersionEntity("9781234755117", book, false, false);
-		bookVersionRepository.save(bookVersion);
+		List<Long> libraryIds = List.of(1L, 2L, 3L);
+		int isbnCounter = 1000;
 
-		LoanEntity loan = new LoanEntity(null, 1L, bookVersion,
-				LocalDate.of(2025, 3, 23),
-				LocalDate.of(2025, 4, 6),
-				null);
-		loanRepository.save(loan);
+		for (Long libraryId : libraryIds) {
+			for (int i = 0; i < 3; i++) {
+				String isbn = "9781234" + (isbnCounter++);
+				boolean isCheckedOut = (i == 0);
+				boolean isReserved = (i == 1);
+				BookVersionEntity version = new BookVersionEntity(isbn, book, isCheckedOut, isReserved, libraryId);
+				bookVersionRepository.save(version);
 
-		ReservationEntity reservation = new ReservationEntity(null, 1L, bookVersion, LocalDate.now());
-		reservationRepository.save(reservation);
+				if (isCheckedOut) {
+					LoanEntity loan = new LoanEntity(null, 1L, version,
+							LocalDate.of(2025, 3, 23),
+							LocalDate.of(2025, 4, 6),
+							null);
+					loanRepository.save(loan);
+				}
+				if (isReserved) {
+					ReservationEntity reservation = new ReservationEntity(null, 1L, version, LocalDate.now());
+					reservationRepository.save(reservation);
+				}
+			}
+		}
 	}
 }

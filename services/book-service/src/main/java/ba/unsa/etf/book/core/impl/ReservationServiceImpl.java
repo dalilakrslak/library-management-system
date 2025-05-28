@@ -94,4 +94,12 @@ public class ReservationServiceImpl implements ReservationService {
         }).collect(Collectors.toList());
     }
 
+    @Override
+    public User getUserByReservationId(Long reservationId) {
+        Reservation reservation = reservationRepository.findById(reservationId).map(reservationMapper::entityToDto).orElse(null);
+        String url = "http://library-service/user/" + reservation.getUserId();
+
+        return restTemplate.getForObject(url, User.class);
+    }
+
 }

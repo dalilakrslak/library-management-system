@@ -12,6 +12,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -37,8 +38,8 @@ class LoanRestTest {
                 1L,
                 100L,
                 "978-99955-42-10-4",
-                LocalDateTime.of(2024, 5, 1, 10, 0),
-                LocalDateTime.of(2024, 6, 1, 10, 0),
+                LocalDate.of(2024, 5, 1),
+                LocalDate.of(2024, 6, 1),
                 null
         );
         loans = List.of(loan);
@@ -98,11 +99,11 @@ class LoanRestTest {
 
     @Test
     void update_ShouldReturnUpdatedLoan() {
-        loan.setReturnDate(LocalDateTime.of(2024, 5, 15, 10, 0));
+        loan.setReturnDate(LocalDate.of(2024, 5, 15));
         when(loanService.update(any(Loan.class))).thenReturn(loan);
         Loan result = loanRest.update(1L, loan).getBody();
         assertNotNull(result);
-        assertEquals("2024-05-15T10:00", result.getReturnDate().toString().substring(0, 16));
+        assertEquals("2024-05-15", result.getReturnDate().toString());
     }
 
     @Test

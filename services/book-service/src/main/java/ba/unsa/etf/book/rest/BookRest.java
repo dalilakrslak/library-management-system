@@ -1,6 +1,8 @@
 package ba.unsa.etf.book.rest;
 
 import ba.unsa.etf.book.api.model.Book;
+import ba.unsa.etf.book.api.model.BookAvailability;
+import ba.unsa.etf.book.api.model.BookVersion;
 import ba.unsa.etf.book.api.service.BookService;
 import com.netflix.appinfo.EurekaInstanceConfig;
 import io.swagger.v3.oas.annotations.Operation;
@@ -110,6 +112,20 @@ public class BookRest {
     public String selfLoadBalancedCall() {
         String response = restTemplate.getForObject("http://book-service/book/whoami", String.class);
         return "Self-called: " + response;
+    }
+
+    @Operation(summary = "Get book availability in all libraries")
+    @GetMapping("/availability/{bookId}")
+    public ResponseEntity<List<BookAvailability>> getBookAvailability(@Parameter(description = "ID of the book") @PathVariable Long bookId) {
+        List<BookAvailability> availability = bookService.getBookAvailability(bookId);
+        return availability.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(availability);
+    }
+
+    @Operation(summary = "Get all versions of a book")
+    @GetMapping("/version/{bookId}")
+    public ResponseEntity<List<BookVersion>> getBookVersions(@Parameter(description = "ID of the book") @PathVariable Long bookId) {
+        List<BookVersion> bookVersions = bookService.getBookVersions(bookId);
+        return bookVersions.isEmpty() ? ResponseEntity.notFound().build() : ResponseEntity.ok(bookVersions);
     }
 
 }

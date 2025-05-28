@@ -24,4 +24,7 @@ public class BookVersionEntity implements Serializable {
 
     @Column(name = "is_reserved")
     private Boolean isReserved;
+
+    @Column(name = "library_id")
+    private Long libraryId;
 }

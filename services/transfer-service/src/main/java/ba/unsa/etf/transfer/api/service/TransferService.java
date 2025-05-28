@@ -1,6 +1,5 @@
 package ba.unsa.etf.transfer.api.service;
 
-import ba.unsa.etf.transfer.api.model.Author;
 import ba.unsa.etf.transfer.api.model.Transfer;
 
 import java.util.List;
@@ -15,4 +14,6 @@ public interface TransferService {
     Transfer update(Transfer transfer);
 
     void delete(Long id);
+
+    List<Transfer> findByBookVersionIn(List<String> bookVersions);
 }

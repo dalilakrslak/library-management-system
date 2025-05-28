@@ -59,4 +59,11 @@ public class TransferServiceImpl implements TransferService {
         transferValidation.exists(id);
         transferRepository.deleteById(id);
     }
+
+    @Override
+    public List<Transfer> findByBookVersionIn(List<String> bookVersions) {
+        List<TransferEntity> transfers = transferRepository.findByBookVersionInAndTransferDateIsNull(bookVersions);
+
+        return transfers.stream().map(transferMapper::entityToDto).collect(Collectors.toList());
+    }
 }
