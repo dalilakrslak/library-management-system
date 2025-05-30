@@ -48,6 +48,20 @@ services:
       timeout: 10s
       retries: 5
 
+  api-gateway:
+    build: ./api-gateway
+    container_name: api-gateway
+    ports:
+      - "8080:8080"
+    depends_on:
+      eureka-server:
+        condition: service_healthy
+      config-server:
+        condition: service_healthy
+    restart: on-failure
+    networks:
+      - backend
+
   book-service:
     build: ./services/book-service
     container_name: book-service

@@ -10,6 +10,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @SpringBootApplication
 @AllArgsConstructor
@@ -20,6 +21,8 @@ public class LibraryServiceApplication implements CommandLineRunner {
 	private RoleRepository roleRepository;
 
 	private UserRepository userRepository;
+
+	private PasswordEncoder passwordEncoder;
 
 	public static void main(String[] args) {
 		SpringApplication.run(LibraryServiceApplication.class, args);
@@ -35,11 +38,18 @@ public class LibraryServiceApplication implements CommandLineRunner {
 		libraryRepository.save(grbavica);
 		libraryRepository.save(dobrinja);
 
-		RoleEntity role = new RoleEntity(null,"USER");
-		roleRepository.save(role);
+		RoleEntity roleUser = new RoleEntity(null,"USER");
+		RoleEntity roleAdmin = new RoleEntity(null,"ADMIN");
+		roleRepository.save(roleUser);
+		roleRepository.save(roleAdmin);
 
-		UserEntity user = new UserEntity(null, "Marko", "Marić", "mmaric1@gmail.com", "lozinka", "062361598", role, centar);
+		String encodedUserPass = passwordEncoder.encode("lozinka");
+		UserEntity user = new UserEntity(null, "Marko", "Marić", "mmaric1@gmail.com", encodedUserPass, "062361598", roleUser, centar);
 		userRepository.save(user);
+
+		String encodedAdminPass = passwordEncoder.encode("admin123");
+		UserEntity admin = new UserEntity(null, "Admin", "Adminović", "admin@gmail.com", encodedAdminPass, "060123456", roleAdmin, centar);
+		userRepository.save(admin);
 	}
 
 }

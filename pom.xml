@@ -15,6 +15,8 @@
         <module>services/library-service</module>
         <module>eureka</module>
         <module>config-server</module>
+        <module>system-events</module>
+        <module>api-gateway</module>
     </modules>
 
     <properties>

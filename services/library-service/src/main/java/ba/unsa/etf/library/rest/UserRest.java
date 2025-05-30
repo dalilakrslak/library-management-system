@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -53,4 +54,16 @@ public class UserRest {
         userService.delete(id);
         return ResponseEntity.ok("User with ID " + id + " was deleted successfully.");
     }
+
+    @GetMapping("/secured")
+    public ResponseEntity<String> test() {
+        return ResponseEntity.ok("You are authenticated!");
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/admin")
+    public ResponseEntity<String> adminOnly() {
+        return ResponseEntity.ok("Welcome Admin!");
+    }
+
 }
