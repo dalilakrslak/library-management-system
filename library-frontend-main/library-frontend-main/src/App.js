@@ -11,18 +11,21 @@ import AdminBooks from './AdminBooks';
 import LibrarianDashboard from './LibrarianDashboard';
 import LibrarianBooks from './LibrarianBooks';
 import LibrarianLoans from './LibrarianLoans';
+import BookSearchPage from './BookSearchPage';
+import BookDetailsPage from './BookDetailsPage';
 
 function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<LibrarianDashboard />} />
+        <Route path="/" element={<AdminDashboard />} />
         <Route path="/login" element={<AuthPage />} />
-        <Route path="/users" element={<UsersPage />} />
-        <Route path="/branches" element={<SuperAdminPage />} />
-        <Route path="/dashboard" element={<DashboardPage />} />
-        <Route path="/books" element={<BooksPage />} />
-
+        <Route path="/superadminusers" element={<UsersPage />} />
+        <Route path="/superadminbranches" element={<SuperAdminPage />} />
+        <Route path="/superadmindashboard" element={<DashboardPage />} />
+        <Route path="/superadminbooks" element={<BooksPage />} />
+        <Route path="/booksearch" element={<BookSearchPage />} />
+        <Route path="/books/:id" element={<BookDetailsPage />} />
         <Route path="/admindashboard" element={<AdminDashboard />} />
         <Route path="/adminbooks" element={<AdminBooks />} />
 

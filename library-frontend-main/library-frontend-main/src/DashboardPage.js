@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import './SuperAdminPage.css';
 import { Pie } from 'react-chartjs-2';
@@ -14,7 +14,30 @@ const DashboardPage = () => {
   const handleLogout = () => {
     localStorage.removeItem("token");
     sessionStorage.clear();
-    navigate("/");
+    navigate("/login");
+  };
+
+  const [modalOpen, setModalOpen] = useState(false);
+  const [formData, setFormData] = useState({
+    title: '',
+    author: '',
+    numberOfBooks: 1,
+    fromBranch: '',
+    toBranch: '',
+  });
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log("Transfer Request Submitted:", formData);
+    setModalOpen(false);  // Close the modal after submission
   };
 
   const pieData = {
@@ -43,22 +66,20 @@ const DashboardPage = () => {
         <h2 className="logo">📚 BookWorm</h2>
         <p className="role-label">Hello, <strong>Superadmin</strong></p>
         <nav>
-          <Link to="/dashboard" className={location.pathname === '/dashboard' ? 'active' : ''}>Dashboard</Link>
-          <Link to="/books" className={location.pathname === '/books' ? 'active' : ''}>Books</Link>
-          <Link to="/branches" className={location.pathname === '/branches' ? 'active' : ''}>Branches</Link>
-          <Link to="/users" className={location.pathname === '/users' ? 'active' : ''}>Users</Link>
+          <Link to="/superadmindashboard" className={location.pathname === '/superadmindashboard' ? 'active' : ''}>Dashboard</Link>
+          <Link to="/superadminbooks" className={location.pathname === '/superadminbooks' ? 'active' : ''}>Books</Link>
+          <Link to="/superadminbranches" className={location.pathname === '/superadminbranches' ? 'active' : ''}>Branches</Link>
+          <Link to="/superadminusers" className={location.pathname === '/superadminusers' ? 'active' : ''}>Users</Link>
         </nav>
         <div className="logout-section">
           <button onClick={handleLogout} className="logout-link">🚪 Logout</button>
         </div>
-
       </aside>
 
       <main className="main-content">
         <h1>Dashboard Statistics</h1>
 
         <div className="dashboard-grid">
-
           <div className="chart-container">
             <div className="pie-chart-box">
               <h3>Borrowed vs Returned Books</h3>
@@ -72,18 +93,97 @@ const DashboardPage = () => {
             <div className="stat-card">📚<span>1500</span><p>Books</p></div>
           </div>
 
+          {/* Widget 1: Completed and Ongoing Book Transfers */}
           <div className="transfers-box">
-            <div className="transfers-header">
-              <h3>Book Transfers</h3>
-              <button className="add-btn">+ Request Transfer</button>
-            </div>
+            <h3>Book Transfers</h3>
+            <h4>Completed Transfers:</h4>
             <ul className="transfer-list">
               <li>Matara → Malta <span>✔ Completed</span></li>
-              <li>Malta → Radiceva <span>⏳ In Process</span></li>
               <li>Alipašina → Miss Irbina <span>✔ Completed</span></li>
+            </ul>
+            <h4>Ongoing Transfers:</h4>
+            <ul className="transfer-list">
+              <li>Malta → Radiceva <span>⏳ In Process</span></li>
               <li>Alipašina → Radiceva <span>⏳ In Process</span></li>
             </ul>
           </div>
+
+          {/* Widget 2: Requested but Unavailable Books */}
+          <div className="requested-transfer-box">
+            <h3>Requested but Unavailable Books</h3>
+            <ul className="transfer-list">
+              <li>📚 Six of Crows <span>❌ Not Available</span></li>
+              <li>📚 It Ends with Us <span>❌ Not Available</span></li>
+              <li>📚 Normal People <span>❌ Not Available</span></li>
+            </ul>
+            <button className="add-btn" onClick={() => setModalOpen(true)}>+ Request Transfer</button>
+          </div>
+
+          {/* Modal for Request Transfer */}
+          {modalOpen && (
+            <div className="modal-backdrop">
+              <div className="modal">
+                <h2>Request Book Transfer</h2>
+                <form onSubmit={handleSubmit}>
+                  <div className="form-group">
+                    <label>Title:</label>
+                    <input
+                      type="text"
+                      name="title"
+                      value={formData.title}
+                      onChange={handleInputChange}
+                      required
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label>Author:</label>
+                    <input
+                      type="text"
+                      name="author"
+                      value={formData.author}
+                      onChange={handleInputChange}
+                      required
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label>Number of Books:</label>
+                    <input
+                      type="number"
+                      name="numberOfBooks"
+                      value={formData.numberOfBooks}
+                      onChange={handleInputChange}
+                      min="1"
+                      required
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label>From Branch:</label>
+                    <input
+                      type="text"
+                      name="fromBranch"
+                      value={formData.fromBranch}
+                      onChange={handleInputChange}
+                      required
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label>To Branch:</label>
+                    <input
+                      type="text"
+                      name="toBranch"
+                      value={formData.toBranch}
+                      onChange={handleInputChange}
+                      required
+                    />
+                  </div>
+                  <div className="modal-actions">
+                    <button type="submit">Submit Request</button>
+                    <button type="button" onClick={() => setModalOpen(false)}>Close</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          )}
 
           <div className="top-books-box">
             <h3>Most Borrowed Books</h3>
@@ -91,18 +191,6 @@ const DashboardPage = () => {
               <li>📖 Six of Crows — 150 times</li>
               <li>📖 It Ends with Us — 123 times</li>
               <li>📖 Normal People — 112 times</li>
-            </ul>
-          </div>
-
-          <div className="books-stat-box">
-            <h3>Books Statistic</h3>
-            <ul>
-              <li>📘 Steve Jobs — 10</li>
-              <li>📘 Zlatan Ibrahimović — 11</li>
-              <li>📘 Pride and Prejudice — 12</li>
-              <li>📘 Lies — 15</li>
-              <li>📘 Silence — 22</li>
-              <li>📘 Prayer — 25</li>
             </ul>
           </div>
         </div>

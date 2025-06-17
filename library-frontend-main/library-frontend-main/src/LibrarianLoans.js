@@ -1,5 +1,7 @@
+// LibrarianLoans.jsx
 import React, { useState } from 'react';
 import './SuperAdminPage.css';
+import './LibrarianLoans.css';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 const LibrarianLoans = () => {
@@ -7,7 +9,7 @@ const LibrarianLoans = () => {
     const navigate = useNavigate();
     const [showReturnConfirm, setShowReturnConfirm] = useState(false);
     const [loanToReturn, setLoanToReturn] = useState(null);
-
+    const [activeTab, setActiveTab] = useState('borrowed');
 
     const handleLogout = () => {
         localStorage.removeItem("token");
@@ -20,9 +22,10 @@ const LibrarianLoans = () => {
         { id: 2, isbn: '978-0061120084', title: 'To Kill a Mockingbird', user: 'Jane Smith', loanDate: '2025-06-10', dueDate: '2025-06-30' }
     ]);
 
-    /*const returnBook = (id) => {
-        setLoans(loans.filter(loan => loan.id !== id));
-    };*/
+    const [overdue, setOverdue] = useState([
+        { id: 1, user: 'Alice Brown', title: '1984', dueDate: '2025-06-10', daysLate: 7 },
+        { id: 2, user: 'Bob Miller', title: 'Dune', dueDate: '2025-06-01', daysLate: 16 }
+    ]);
 
     const confirmReturn = (loan) => {
         setLoanToReturn(loan);
@@ -35,10 +38,9 @@ const LibrarianLoans = () => {
     };
 
     const proceedReturn = () => {
-        setLoans(loans.filter(l => l.id !== loanToReturn.id)); // uklanja iz liste
+        setLoans(loans.filter(l => l.id !== loanToReturn.id));
         cancelReturn();
     };
-
 
     return (
         <div className="admin-container">
@@ -57,36 +59,65 @@ const LibrarianLoans = () => {
 
             <main className="main-content">
                 <div className="header">
-                    <h1>Loaned Books</h1>
+                    <h1>Loans</h1>
                 </div>
 
-                <table>
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>ISBN</th>
-                            <th>Title</th>
-                            <th>User</th>
-                            <th>Loan Date</th>
-                            <th>Due Date</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {loans.map(loan => (
-                            <tr key={loan.id}>
-                                <td>{loan.id}</td>
-                                <td>{loan.isbn}</td>
-                                <td>{loan.title}</td>
-                                <td>{loan.user}</td>
-                                <td>{loan.loanDate}</td>
-                                <td>{loan.dueDate}</td>
-                                <td><span onClick={() => confirmReturn(loan)}>↩️</span></td>
+                <div className="tabs">
+                    <button className={activeTab === 'borrowed' ? 'active' : ''} onClick={() => setActiveTab('borrowed')}>Borrowed Books</button>
+                    <button className={activeTab === 'overdue' ? 'active' : ''} onClick={() => setActiveTab('overdue')}>Overdue Borrowers</button>
+                </div>
 
+                {activeTab === 'borrowed' ? (
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>ISBN</th>
+                                <th>Title</th>
+                                <th>User</th>
+                                <th>Loan Date</th>
+                                <th>Due Date</th>
+                                <th>Action</th>
                             </tr>
-                        ))}
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            {loans.map(loan => (
+                                <tr key={loan.id}>
+                                    <td>{loan.id}</td>
+                                    <td>{loan.isbn}</td>
+                                    <td>{loan.title}</td>
+                                    <td>{loan.user}</td>
+                                    <td>{loan.loanDate}</td>
+                                    <td>{loan.dueDate}</td>
+                                    <td><span onClick={() => confirmReturn(loan)}>↩️</span></td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                ) : (
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>User</th>
+                                <th>Title</th>
+                                <th>Due Date</th>
+                                <th>Days Late</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {overdue.map(item => (
+                                <tr key={item.id}>
+                                    <td>{item.id}</td>
+                                    <td>{item.user}</td>
+                                    <td>{item.title}</td>
+                                    <td>{item.dueDate}</td>
+                                    <td>{item.daysLate}</td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                )}
 
                 {showReturnConfirm && (
                     <div className="modal-backdrop">

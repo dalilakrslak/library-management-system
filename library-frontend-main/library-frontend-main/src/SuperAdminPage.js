@@ -10,7 +10,7 @@ const SuperAdminPage = () => {
     const handleLogout = () => {
         localStorage.removeItem("token");
         sessionStorage.clear();
-        navigate("/");
+        navigate("/login");
     };
 
     const [branches, setBranches] = useState([
@@ -75,10 +75,10 @@ const SuperAdminPage = () => {
                 <h2 className="logo">📚 BookWorm</h2>
                 <p className="role-label">Hello, <strong>Superadmin</strong></p>
                 <nav>
-                    <Link to="/dashboard" className={location.pathname === '/dashboard' ? 'active' : ''}>Dashboard</Link>
-                    <Link to="/books" className={location.pathname === '/books' ? 'active' : ''}>Books</Link>
-                    <Link to="/branches" className={location.pathname === '/branches' ? 'active' : ''}>Branches</Link>
-                    <Link to="/users" className={location.pathname === '/users' ? 'active' : ''}>Users</Link>
+                    <Link to="/superadmindashboard" className={location.pathname === '/superadmindashboard' ? 'active' : ''}>Dashboard</Link>
+                    <Link to="/superadminbooks" className={location.pathname === '/superadminbooks' ? 'active' : ''}>Books</Link>
+                    <Link to="/superadminbranches" className={location.pathname === '/superadminbranches' ? 'active' : ''}>Branches</Link>
+                    <Link to="/superadminusers" className={location.pathname === '/superadminusers' ? 'active' : ''}>Users</Link>
                 </nav>
                 <div className="logout-section">
                     <button onClick={handleLogout} className="logout-link">🚪 Logout</button>
