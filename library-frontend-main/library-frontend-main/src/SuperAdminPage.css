@@ -7,6 +7,8 @@
 
 /* Sidebar */
 .sidebar {
+  display: flex;
+  flex-direction: column;
   width: 220px;
   background-color: #000;
   color: #fff;
@@ -284,3 +286,29 @@ td span:hover {
   height: auto;
   margin-top: 1rem;
 }
+
+
+.logout-section {
+  padding-top: 1rem;
+  border-top: 1px solid #555; /* lagana linija iznad */
+}
+
+.logout-link {
+  display: block;
+  color: white;
+  font-weight: bold;
+  text-decoration: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  margin-top: 0.5rem;
+  text-align: left;
+}
+
+.logout-link:hover {
+  text-decoration: underline;
+  color: #fff;
+}
+
+

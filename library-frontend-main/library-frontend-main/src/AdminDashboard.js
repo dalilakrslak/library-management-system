@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-const DashboardPage = () => {
+const AdminDashboard = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -41,13 +41,11 @@ const DashboardPage = () => {
     <div className="admin-container">
       <aside className="sidebar">
         <h2 className="logo">📚 BookWorm</h2>
-        <p className="role-label">Hello, <strong>Superadmin</strong></p>
+        <p className="role-label">Hello, <strong>Admin</strong></p>
         <nav>
-          <Link to="/dashboard" className={location.pathname === '/dashboard' ? 'active' : ''}>Dashboard</Link>
-          <Link to="/books" className={location.pathname === '/books' ? 'active' : ''}>Books</Link>
-          <Link to="/branches" className={location.pathname === '/branches' ? 'active' : ''}>Branches</Link>
-          <Link to="/users" className={location.pathname === '/users' ? 'active' : ''}>Users</Link>
-        </nav>
+          <Link to="/admindashboard" className={location.pathname === '/admindashboard' ? 'active' : ''}>Dashboard</Link>
+          <Link to="/adminbooks" className={location.pathname === '/adminbooks' ? 'active' : ''}>Books</Link>
+          </nav>
         <div className="logout-section">
           <button onClick={handleLogout} className="logout-link">🚪 Logout</button>
         </div>
@@ -111,4 +109,4 @@ const DashboardPage = () => {
   );
 };
 
-export default DashboardPage;
+export default AdminDashboard;

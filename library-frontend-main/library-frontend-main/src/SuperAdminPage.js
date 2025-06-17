@@ -1,9 +1,17 @@
 import React, { useState } from 'react';
 import './SuperAdminPage.css';
 import { Link, useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const SuperAdminPage = () => {
     const location = useLocation();
+    const navigate = useNavigate();
+
+    const handleLogout = () => {
+        localStorage.removeItem("token");
+        sessionStorage.clear();
+        navigate("/");
+    };
 
     const [branches, setBranches] = useState([
         { id: 1, name: 'BookWorm Mostar', contact: '0412410984', location: 'Mostar' },
@@ -66,12 +74,15 @@ const SuperAdminPage = () => {
             <aside className="sidebar">
                 <h2 className="logo">📚 BookWorm</h2>
                 <p className="role-label">Hello, <strong>Superadmin</strong></p>
-                    <nav>
-                        <Link to="/dashboard" className={location.pathname === '/dashboard' ? 'active' : ''}>Dashboard</Link>
-                        <Link to="/books" className={location.pathname === '/books' ? 'active' : ''}>Books</Link>
-                        <Link to="/branches" className={location.pathname === '/branches' ? 'active' : ''}>Branches</Link>
-                        <Link to="/users" className={location.pathname === '/users' ? 'active' : ''}>Users</Link>
-                    </nav>
+                <nav>
+                    <Link to="/dashboard" className={location.pathname === '/dashboard' ? 'active' : ''}>Dashboard</Link>
+                    <Link to="/books" className={location.pathname === '/books' ? 'active' : ''}>Books</Link>
+                    <Link to="/branches" className={location.pathname === '/branches' ? 'active' : ''}>Branches</Link>
+                    <Link to="/users" className={location.pathname === '/users' ? 'active' : ''}>Users</Link>
+                </nav>
+                <div className="logout-section">
+                    <button onClick={handleLogout} className="logout-link">🚪 Logout</button>
+                </div>
             </aside>
 
             <main className="main-content">

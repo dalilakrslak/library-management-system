@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-const DashboardPage = () => {
+const LibrarianDashboard = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -41,13 +41,12 @@ const DashboardPage = () => {
     <div className="admin-container">
       <aside className="sidebar">
         <h2 className="logo">📚 BookWorm</h2>
-        <p className="role-label">Hello, <strong>Superadmin</strong></p>
+        <p className="role-label">Hello, <strong>Librarian</strong></p>
         <nav>
-          <Link to="/dashboard" className={location.pathname === '/dashboard' ? 'active' : ''}>Dashboard</Link>
-          <Link to="/books" className={location.pathname === '/books' ? 'active' : ''}>Books</Link>
-          <Link to="/branches" className={location.pathname === '/branches' ? 'active' : ''}>Branches</Link>
-          <Link to="/users" className={location.pathname === '/users' ? 'active' : ''}>Users</Link>
-        </nav>
+          <Link to="/librariandashboard" className={location.pathname === '/librariandashboard' ? 'active' : ''}>Dashboard</Link>
+          <Link to="/librarianbooks" className={location.pathname === '/librarianbooks' ? 'active' : ''}>Books</Link>
+          <Link to="/librarianloans" className={location.pathname === '/librarianloans' ? 'active' : ''}>Loans</Link>
+          </nav>
         <div className="logout-section">
           <button onClick={handleLogout} className="logout-link">🚪 Logout</button>
         </div>
@@ -111,4 +110,4 @@ const DashboardPage = () => {
   );
 };
 
-export default DashboardPage;
+export default LibrarianDashboard;

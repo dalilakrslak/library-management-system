@@ -3,7 +3,7 @@ import './SuperAdminPage.css';
 import { Link, useLocation } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 
-const BooksPage = () => {
+const AdminBooks = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -72,13 +72,11 @@ const BooksPage = () => {
     <div className="admin-container">
       <aside className="sidebar">
         <h2 className="logo">📚 BookWorm</h2>
-        <p className="role-label">Hello, <strong>Superadmin</strong></p>
+        <p className="role-label">Hello, <strong>Admin</strong></p>
         <nav>
-          <Link to="/dashboard" className={location.pathname === '/dashboard' ? 'active' : ''}>Dashboard</Link>
-          <Link to="/books" className={location.pathname === '/books' ? 'active' : ''}>Books</Link>
-          <Link to="/branches" className={location.pathname === '/branches' ? 'active' : ''}>Branches</Link>
-          <Link to="/users" className={location.pathname === '/users' ? 'active' : ''}>Users</Link>
-        </nav>
+          <Link to="/admindashboard" className={location.pathname === '/admindashboard' ? 'active' : ''}>Dashboard</Link>
+          <Link to="/adminbooks" className={location.pathname === '/adminbooks' ? 'active' : ''}>Books</Link>
+          </nav>
         <div className="logout-section">
           <button onClick={handleLogout} className="logout-link">🚪 Logout</button>
         </div>
@@ -156,4 +154,4 @@ const BooksPage = () => {
   );
 };
 
-export default BooksPage;
+export default AdminBooks;

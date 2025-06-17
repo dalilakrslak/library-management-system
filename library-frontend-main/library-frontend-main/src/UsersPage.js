@@ -1,9 +1,17 @@
 import React, { useState } from 'react';
 import './SuperAdminPage.css';
 import { Link, useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const UsersPage = () => {
     const location = useLocation();
+    const navigate = useNavigate();
+
+    const handleLogout = () => {
+        localStorage.removeItem("token");
+        sessionStorage.clear();
+        navigate("/");
+    };
 
     const [users, setUsers] = useState([
         { id: 1, firstName: 'Amir', lastName: 'Kovač', email: 'amir@gmail.com', password: '****', phone: '061111111', role: 'korisnik' },
@@ -71,6 +79,9 @@ const UsersPage = () => {
                     <Link to="/branches" className={location.pathname === '/branches' ? 'active' : ''}>Branches</Link>
                     <Link to="/users" className={location.pathname === '/users' ? 'active' : ''}>Users</Link>
                 </nav>
+                <div className="logout-section">
+                    <button onClick={handleLogout} className="logout-link">🚪 Logout</button>
+                </div>
 
             </aside>
 
