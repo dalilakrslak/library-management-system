@@ -18,7 +18,7 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<AdminDashboard />} />
+        <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<AuthPage />} />
         <Route path="/superadminusers" element={<UsersPage />} />
         <Route path="/superadminbranches" element={<SuperAdminPage />} />
