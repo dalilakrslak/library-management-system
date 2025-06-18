@@ -1,0 +1,500 @@
+/* Logout dugme u sidebaru */
+.logout-section {
+  margin-top: auto;
+  margin-bottom: 1rem;
+  padding: 1rem;
+}
+
+/* Glavni izgled dugmeta sa plavom bojom */
+.logout-link {
+  background-color: #3498db; /* Svetla plava boja */
+  color: #fff;
+  font-size: 1rem;
+  font-weight: bold;
+  padding: 0.8rem 1.5rem;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 10px rgba(52, 152, 219, 0.3); /* Plava senka */
+}
+
+.logout-link:hover {
+  background-color: #2980b9; /* Tamnija plava pri hoveru */
+  transform: scale(1.05); /* Efekat uvećanja pri hoveru */
+  box-shadow: 0 6px 15px rgba(52, 152, 219, 0.4); /* Intenzivnija senka pri hoveru */
+}
+
+.logout-link:focus {
+  outline: none;
+  box-shadow: 0 0 5px 2px rgba(52, 152, 219, 0.5); /* Focus efekat sa svetlom plavom ivicom */
+}
+
+/* Dodavanje margine između ikone i teksta */
+.logout-link svg {
+  margin-right: 8px;
+}
+
+/* Icona stil */
+.logout-link svg path {
+  fill: #fff; /* Osiguraj da ikona bude bela */
+}
+
+
+.admin-container {
+  display: flex;
+  height: 100vh;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+/* Sidebar */
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  width: 220px;
+  background-color: #000;
+  color: #fff;
+  padding: 2rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+/* Logo */
+.logo {
+  font-size: 1.6rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+/* Hello, Superadmin */
+.role-label {
+  font-size: 1rem;
+  margin-bottom: 2rem;
+  color: #ccc;
+}
+
+/* Sidebar navigacija */
+.sidebar nav {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  width: 100%;
+}
+
+.sidebar nav a {
+  color: #fff;
+  text-decoration: none;
+  padding: 0.6rem 1rem;
+  border-radius: 5px;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.sidebar nav a.active,
+.sidebar nav a:hover {
+  background-color: #444;
+}
+
+/* Glavni sadržaj */
+.main-content {
+  flex-grow: 1;
+  background: #f9f9f9;
+  padding: 2rem;
+  overflow-y: auto;
+}
+
+/* Header: naslov i dugme */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.add-btn {
+  background-color: #000;
+  color: #fff;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 4px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.add-btn:hover {
+  background-color: #222;
+}
+
+/* Tabela */
+table {
+  width: 100%;
+  background: #fff;
+  border-collapse: collapse;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+}
+
+th, td {
+  text-align: left;
+  padding: 0.8rem 1rem;
+  border-bottom: 1px solid #eee;
+  font-size: 0.95rem;
+}
+
+th {
+  background-color: #f3f3f3;
+  font-weight: bold;
+}
+
+td span {
+  cursor: pointer;
+  margin-right: 0.5rem;
+  font-size: 1.1rem;
+}
+
+td span:hover {
+  opacity: 0.7;
+}
+
+/* Modal backdrop */
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+/* Modal prozor */
+.modal {
+  background: white;
+  padding: 2rem;
+  border-radius: 8px;
+  width: 400px;
+  max-width: 90%;
+}
+
+.modal h2 {
+  margin-bottom: 1.5rem;
+  font-size: 1.3rem;
+}
+
+/* Forma */
+.modal form {
+  display: flex;
+  flex-direction: column;
+}
+
+.modal input {
+  padding: 0.6rem;
+  margin-bottom: 1rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+/* Modal dugmad */
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+}
+
+.modal-actions button {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 4px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.modal-actions button[type="submit"] {
+  background-color: #000;
+  color: white;
+}
+
+.modal-actions button[type="button"] {
+  background-color: #ccc;
+  color: #000;
+}
+
+/* ---------- DASHBOARD WIDGETS ---------- */
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 2rem;
+  margin-top: 2rem;
+  align-items: flex-start;
+}
+
+/* PIE CHART */
+.chart-container {
+  background: #fff;
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.pie-chart-box {
+  width: 100%;
+  max-width: 430px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.pie-chart-box h3 {
+  margin-bottom: 1rem;
+  font-size: 18px;
+  color: #333;
+}
+
+.pie-chart-box canvas {
+  width: 100% !important;
+  height: auto !important;
+}
+
+/* STATISTICS BOX */
+.stats-box {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.stat-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #ffffff;
+  padding: 1.2rem 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  transition: all 0.2s ease-in-out;
+}
+
+.stat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.stat-card p {
+  margin: 0;
+  color: #555;
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.stat-card span {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #111;
+}
+
+/* TRANSFERS / TOP BOOKS / BOOK STATS */
+.transfers-box,
+.top-books-box,
+.books-stat-box {
+  background: #ffffff;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+}
+
+.transfers-box h3,
+.top-books-box h3,
+.books-stat-box h3 {
+  font-size: 16px;
+  margin-bottom: 1rem;
+}
+
+.transfer-list li,
+.top-books-box li,
+.books-stat-box li {
+  margin-bottom: 0.6rem;
+  font-size: 14px;
+  color: #333;
+}
+
+/* TRANSFER BUTTON */
+.transfers-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.add-btn {
+  background-color: #000;
+  color: #fff;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.add-btn:hover {
+  background-color: #222;
+}
+
+/* ---------- TRANSFER WIDGETS ---------- */
+
+/* Transfer Widget */
+.transfers-box {
+  background: #fff;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.transfers-box h3 {
+  font-size: 18px;
+  margin-bottom: 1rem;
+  color: #333;
+}
+
+.transfer-list {
+  list-style: none;
+  padding-left: 0;
+}
+
+.transfer-list li {
+  font-size: 14px;
+  color: #333;
+  margin-bottom: 0.6rem;
+}
+
+.transfer-list li span {
+  font-weight: 500;
+  color: #007bff;
+}
+
+/* Requested but Unavailable Books */
+.requested-transfer-box {
+  background: #fff;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.requested-transfer-box h3 {
+  font-size: 18px;
+  margin-bottom: 1rem;
+  color: #333;
+}
+
+.requested-transfer-box .transfer-list {
+  list-style: none;
+  padding-left: 0;
+}
+
+.requested-transfer-box .transfer-list li {
+  font-size: 14px;
+  color: #333;
+  margin-bottom: 0.6rem;
+}
+
+.requested-transfer-box .transfer-list li span {
+  font-weight: 500;
+  color: #ff0000;
+}
+
+.add-btn {
+  background-color: #000;
+  color: #fff;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  margin-top: 1rem;
+}
+
+.add-btn:hover {
+  background-color: #222;
+}
+
+/* Modal backdrop */
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+/* Modal prozor */
+.modal {
+  background: white;
+  padding: 2rem;
+  border-radius: 8px;
+  width: 400px;
+  max-width: 90%;
+}
+
+.modal h2 {
+  margin-bottom: 1.5rem;
+  font-size: 1.3rem;
+}
+
+/* Forma */
+.modal form {
+  display: flex;
+  flex-direction: column;
+}
+
+.modal input {
+  padding: 0.6rem;
+  margin-bottom: 1rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+/* Modal dugmad */
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+}
+
+.modal-actions button {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 4px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.modal-actions button[type="submit"] {
+  background-color: #000;
+  color: white;
+}
+
+.modal-actions button[type="button"] {
+  background-color: #ccc;
+  color: #000;
+}

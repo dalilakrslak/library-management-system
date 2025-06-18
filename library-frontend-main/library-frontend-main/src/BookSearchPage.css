@@ -1,0 +1,203 @@
+/* BookSearchPage.css */
+.page {
+  padding: 40px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: #f9f9f9;
+}
+
+.title {
+  font-size: 32px;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+
+.filters {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.search-input,
+.select-input {
+  padding: 10px 14px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  width: 260px;
+}
+
+.book-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+}
+
+.book-card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+  width: 180px;
+  text-align: center;
+  transition: transform 0.2s;
+}
+
+.book-card:hover {
+  transform: translateY(-4px);
+}
+
+.book-cover {
+  font-size: 50px;
+  margin-bottom: 14px;
+}
+
+.book-title {
+  font-size: 18px;
+  font-weight: 600;
+  margin: 6px 0;
+}
+
+.book-author {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 6px;
+}
+
+.book-genre {
+  font-size: 14px;
+  color: #444;
+  margin-bottom: 6px;
+}
+
+.book-status {
+  font-weight: bold;
+}
+
+.book-status.available {
+  color: #2e7d32;
+}
+
+.book-status.unavailable {
+  color: #c62828;
+}
+
+.no-books {
+  font-style: italic;
+  color: #777;
+  margin-top: 20px;
+}
+
+.header-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.logout-btn {
+  padding: 10px 16px;
+  background-color: #000;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.logout-btn:hover {
+  background-color: #333;
+}
+
+.book-card {
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.book-card:hover {
+  transform: scale(1.03);
+}
+
+.details-page {
+  display: flex;
+  padding: 40px;
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #f2f2f2;
+  min-height: 100vh;
+  gap: 40px;
+}
+
+.book-cover-large {
+  font-size: 120px;
+}
+
+.book-info {
+  max-width: 600px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.book-info h1 {
+  font-size: 36px;
+  margin-bottom: 0;
+}
+
+.book-info h2 {
+  font-size: 22px;
+  color: #555;
+}
+
+.rating {
+  font-size: 20px;
+  color: #f39c12;
+}
+
+.description {
+  font-size: 16px;
+  color: #333;
+  line-height: 1.5;
+}
+
+.copies {
+  font-size: 16px;
+  font-weight: 500;
+  color: #222;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.reserve-button,
+.back-button {
+  padding: 12px 20px;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.reserve-button {
+  background-color: #000;
+  color: #fff;
+}
+
+.back-button {
+  background-color: #ccc;
+  color: #333;
+}
+
+.reservation-message {
+  margin-top: 20px;
+  padding: 14px;
+  background-color: #fff3cd;
+  border-left: 5px solid #ffecb5;
+  font-size: 15px;
+  color: #664d03;
+  border-radius: 6px;
+}
+
+
