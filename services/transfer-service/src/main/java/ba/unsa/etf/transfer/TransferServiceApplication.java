@@ -10,7 +10,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import java.time.LocalDate;
 import java.util.Date;
 
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = {
+		"ba.unsa.etf.transfer",
+		"ba.unsa.etf.security_core.jwt"
+})
 @AllArgsConstructor
 public class TransferServiceApplication  implements CommandLineRunner {
 

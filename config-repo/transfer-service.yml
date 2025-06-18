@@ -10,6 +10,14 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
+  rabbitmq:
+    host: rabbitmq
+    port: 5672
+    username: guest
+    password: guest
+
+jwt:
+  secret: MySuperSecretKey1234567890MySuperSecretKey1234
 
 eureka:
   client:

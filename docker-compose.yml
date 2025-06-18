@@ -70,6 +70,8 @@ services:
     networks:
       - backend
     depends_on:
+      rabbitmq:
+        condition: service_healthy
       postgres:
         condition: service_started
       eureka-server:
@@ -85,6 +87,10 @@ services:
     networks:
       - backend
     depends_on:
+      book-service:
+        condition: service_started
+      rabbitmq:
+        condition: service_healthy
       postgres:
         condition: service_started
       eureka-server:
@@ -106,6 +112,38 @@ services:
         condition: service_healthy
       config-server:
         condition: service_healthy
+
+  system-events:
+    build: ./system-events
+    container_name: system-events
+    ports:
+      - "9090:9090"
+    networks:
+      - backend
+    depends_on:
+      postgres:
+        condition: service_started
+      eureka-server:
+        condition: service_healthy
+      config-server:
+        condition: service_healthy
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    networks:
+      - backend
+    healthcheck:
+      test: [ "CMD", "rabbitmqctl", "status" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
 volumes:
   pgdata:

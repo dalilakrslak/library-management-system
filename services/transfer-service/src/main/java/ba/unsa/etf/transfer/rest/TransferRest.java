@@ -2,7 +2,6 @@ package ba.unsa.etf.transfer.rest;
 
 import ba.unsa.etf.transfer.api.model.Transfer;
 import ba.unsa.etf.transfer.api.service.TransferService;
-import ba.unsa.etf.transfer.dao.model.TransferEntity;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -61,5 +60,4 @@ public class TransferRest {
         List<Transfer> transfers = transferService.findByBookVersionIn(bookVersions);
         return ResponseEntity.ok(transfers);
     }
-
 }

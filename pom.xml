@@ -10,13 +10,14 @@
     <packaging>pom</packaging>
 
     <modules>
+        <module>system-events</module>
         <module>services/book-service</module>
         <module>services/transfer-service</module>
         <module>services/library-service</module>
         <module>eureka</module>
         <module>config-server</module>
-        <module>system-events</module>
         <module>api-gateway</module>
+        <module>security-core</module>
     </modules>
 
     <properties>

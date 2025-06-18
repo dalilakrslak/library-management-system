@@ -1,7 +1,8 @@
-package ba.unsa.etf.library.utils;
+package ba.unsa.etf.security_core.jwt;
 
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.security.Key;
@@ -9,8 +10,12 @@ import java.util.Date;
 
 @Service
 public class JwtService {
+    private final Key secretKey;
 
-    private final Key secretKey = Keys.secretKeyFor(SignatureAlgorithm.HS256);
+    public JwtService(@Value("${jwt.secret}") String secret) {
+        this.secretKey = Keys.hmacShaKeyFor(secret.getBytes());
+    }
+
     private final long jwtExpirationMs = 1000 * 60 * 15;
 
     public String generateToken(String email, String role) {
@@ -52,5 +57,4 @@ public class JwtService {
                 .signWith(secretKey)
                 .compact();
     }
-
 }

@@ -1,6 +1,6 @@
 package ba.unsa.etf.library.config;
 
-import ba.unsa.etf.library.utils.JwtAuthFilter;
+import ba.unsa.etf.security_core.jwt.JwtAuthFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

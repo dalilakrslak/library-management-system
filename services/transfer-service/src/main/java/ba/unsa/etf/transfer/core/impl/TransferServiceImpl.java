@@ -1,11 +1,13 @@
 package ba.unsa.etf.transfer.core.impl;
 
 import ba.unsa.etf.transfer.api.model.Transfer;
+import ba.unsa.etf.transfer.api.model.BookReserveRequest;
 import ba.unsa.etf.transfer.api.service.TransferService;
 import ba.unsa.etf.transfer.core.mapper.TransferMapper;
 import ba.unsa.etf.transfer.core.validation.TransferValidation;
 import ba.unsa.etf.transfer.dao.model.TransferEntity;
 import ba.unsa.etf.transfer.dao.repository.TransferRepository;
+import ba.unsa.etf.transfer.utils.TransferEventPublisher;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,6 +21,7 @@ public class TransferServiceImpl implements TransferService {
     private final TransferRepository transferRepository;
     private final TransferMapper transferMapper;
     private final TransferValidation transferValidation;
+    private final TransferEventPublisher eventPublisher;
 
     @Override
     public List<Transfer> findAll() {
@@ -39,6 +42,19 @@ public class TransferServiceImpl implements TransferService {
     public Transfer create(Transfer transfer) {
         TransferEntity transferEntity = transferMapper.dtoToEntity(transfer);
         transferRepository.save(transferEntity);
+        System.err.println(" prosao saveee u create ");
+        BookReserveRequest request = new BookReserveRequest(
+                transfer.getBookVersion(),
+                transfer.getLibraryFrom(),
+                transfer.getLibraryTo()
+        );
+        try {
+            eventPublisher.publishReserveRequest(request);
+            System.err.println(" event publisher ");
+        } catch (Exception e) {
+            e.printStackTrace(); // OVO ĆE TI POKAZATI TAČAN RAZLOG
+        }
+
         return transferMapper.entityToDto(transferEntity);
     }
 

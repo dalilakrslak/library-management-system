@@ -6,6 +6,7 @@ import ba.unsa.etf.transfer.core.mapper.TransferMapper;
 import ba.unsa.etf.transfer.core.validation.TransferValidation;
 import ba.unsa.etf.transfer.dao.model.TransferEntity;
 import ba.unsa.etf.transfer.dao.repository.TransferRepository;
+import ba.unsa.etf.transfer.utils.TransferEventPublisher;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -31,16 +32,23 @@ class TransferTests {
     @Mock
     private TransferValidation transferValidation;
 
-    @InjectMocks
-    private TransferServiceImpl transferService;
+    @Mock
+    private TransferEventPublisher eventPublisher;
 
     private Transfer transfer;
     private TransferEntity transferEntity;
+    private TransferServiceImpl transferService;
 
     @BeforeEach
     void setUp() {
         transfer = new Transfer(1L, "123456789", 1L, 2L, LocalDate.now());
         transferEntity = new TransferEntity(1L, null, null, null, LocalDate.now());
+        transferService = new TransferServiceImpl(
+                transferRepository,
+                transferMapper,
+                transferValidation,
+                eventPublisher
+        );
     }
 
     @Test

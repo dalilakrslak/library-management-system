@@ -12,7 +12,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = {
+		"ba.unsa.etf.library",
+		"ba.unsa.etf.security_core.jwt"
+})
 @AllArgsConstructor
 public class LibraryServiceApplication implements CommandLineRunner {
 

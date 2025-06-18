@@ -3,14 +3,13 @@ package ba.unsa.etf.library.rest;
 import ba.unsa.etf.library.api.model.JwtResponse;
 import ba.unsa.etf.library.api.model.LoginRequest;
 import ba.unsa.etf.library.api.model.RefreshTokenRequest;
-import ba.unsa.etf.library.utils.JwtService;
+import ba.unsa.etf.security_core.jwt.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
