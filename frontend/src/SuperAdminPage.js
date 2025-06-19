@@ -1,26 +1,52 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './SuperAdminPage.css';
 import { Link, useLocation } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
+import { ROUTES } from './utils/config';
+import { logoutUser } from './AuthService';
 
 const SuperAdminPage = () => {
     const location = useLocation();
     const navigate = useNavigate();
 
     const handleLogout = () => {
-        localStorage.removeItem("token");
-        sessionStorage.clear();
-        navigate("/login");
+        logoutUser(navigate);
     };
 
-    const [branches, setBranches] = useState([
-        { id: 1, name: 'BookWorm Mostar', contact: '0412410984', location: 'Mostar' },
-        { id: 2, name: 'BookWorm Sarajevo', contact: '0337654321', location: 'Sarajevo' }
-    ]);
-
+    const [branches, setBranches] = useState([]);
     const [showModal, setShowModal] = useState(false);
     const [editingBranch, setEditingBranch] = useState(null);
     const [formData, setFormData] = useState({ name: '', contact: '', location: '' });
+
+    useEffect(() => {
+        const fetchLibraries = async () => {
+            try {
+                const token = localStorage.getItem('token');
+                const response = await fetch(ROUTES.libraries, {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                });
+
+                if (!response.ok) throw new Error('Failed to fetch libraries');
+
+                const data = await response.json();
+
+                const formatted = data.map(lib => ({
+                    id: lib.id,
+                    name: lib.name,
+                    contact: lib.contact,
+                    location: lib.address 
+                }));
+
+                setBranches(formatted);
+            } catch (err) {
+                console.error('Error fetching libraries:', err);
+            }
+        };
+
+        fetchLibraries();
+    }, []);
 
     const openModal = (branch = null) => {
         setEditingBranch(branch);
@@ -37,18 +63,66 @@ const SuperAdminPage = () => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
-    const handleFormSubmit = (e) => {
+    const handleFormSubmit = async (e) => {
         e.preventDefault();
+        const token = localStorage.getItem('token');
 
-        if (editingBranch) {
-            setBranches(branches.map(b => b.id === editingBranch.id ? { ...formData, id: editingBranch.id } : b));
-        } else {
-            const newId = branches.length ? Math.max(...branches.map(b => b.id)) + 1 : 1;
-            setBranches([...branches, { ...formData, id: newId }]);
+        try {
+            if (editingBranch) {
+            const response = await fetch(`${ROUTES.libraries}/${editingBranch.id}`, {
+                method: 'PUT',
+                headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`
+                },
+                body: JSON.stringify({
+                name: formData.name,
+                address: formData.location,
+                contact: formData.contact
+                })
+            });
+
+            if (!response.ok) throw new Error('Failed to update library');
+
+            const updated = await response.json();
+
+            setBranches(branches.map(b =>
+                b.id === updated.id
+                ? { id: updated.id, name: updated.name, contact: updated.contact, location: updated.address }
+                : b
+            ));
+            } else {
+            const response = await fetch(ROUTES.libraries, {
+                method: 'POST',
+                headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`
+                },
+                body: JSON.stringify({
+                name: formData.name,
+                address: formData.location,
+                contact: formData.contact
+                })
+            });
+
+            if (!response.ok) throw new Error('Failed to create library');
+
+            const created = await response.json();
+
+            setBranches([...branches, {
+                id: created.id,
+                name: created.name,
+                contact: created.contact,
+                location: created.address
+            }]);
+            }
+
+            closeModal();
+        } catch (err) {
+            console.error('Error submitting library:', err);
         }
+        };
 
-        closeModal();
-    };
 
     const [showConfirm, setShowConfirm] = useState(false);
     const [branchToDelete, setBranchToDelete] = useState(null);
@@ -63,11 +137,25 @@ const SuperAdminPage = () => {
         setBranchToDelete(null);
     };
 
-    const proceedDelete = () => {
-        setBranches(branches.filter(b => b.id !== branchToDelete));
-        cancelDelete();
-    };
+    const proceedDelete = async () => {
+        const token = localStorage.getItem('token');
 
+        try {
+            const response = await fetch(`${ROUTES.libraries}/${branchToDelete}`, {
+            method: 'DELETE',
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+            });
+
+            if (!response.ok) throw new Error('Failed to delete library');
+
+            setBranches(branches.filter(b => b.id !== branchToDelete));
+            cancelDelete();
+        } catch (err) {
+            console.error('Error deleting library:', err);
+        }
+        };
 
     return (
         <div className="admin-container">
@@ -77,7 +165,7 @@ const SuperAdminPage = () => {
                 <nav>
                     <Link to="/superadmindashboard" className={location.pathname === '/superadmindashboard' ? 'active' : ''}>Dashboard</Link>
                     <Link to="/superadminbooks" className={location.pathname === '/superadminbooks' ? 'active' : ''}>Books</Link>
-                    <Link to="/superadminbranches" className={location.pathname === '/superadminbranches' ? 'active' : ''}>Branches</Link>
+                    <Link to="/superadminbranches" className={location.pathname === '/superadminbranches' ? 'active' : ''}>Libraries</Link>
                     <Link to="/superadminusers" className={location.pathname === '/superadminusers' ? 'active' : ''}>Users</Link>
                 </nav>
                 <div className="logout-section">
@@ -87,8 +175,8 @@ const SuperAdminPage = () => {
 
             <main className="main-content">
                 <div className="header">
-                    <h1>Branch Management</h1>
-                    <button className="add-btn" onClick={() => openModal()}>+ Add Branch</button>
+                    <h1>Library Management</h1>
+                    <button className="add-btn" onClick={() => openModal()}>+ Add Library</button>
                 </div>
 
                 <table>
@@ -120,7 +208,7 @@ const SuperAdminPage = () => {
                 {showModal && (
                     <div className="modal-backdrop">
                         <div className="modal">
-                            <h2>{editingBranch ? 'Edit Branch' : 'Add Branch'}</h2>
+                            <h2>{editingBranch ? 'Edit Library' : 'Add Library'}</h2>
                             <form onSubmit={handleFormSubmit}>
                                 <input
                                     name="name"

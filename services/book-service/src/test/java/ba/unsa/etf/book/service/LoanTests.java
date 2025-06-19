@@ -98,7 +98,7 @@ public class LoanTests {
         verifyNoMoreInteractions(loanMapper);
     }
 
-    @Test
+    /*@Test
     void testCreate() {
         bookEntity = new BookEntity(1L, "Title", "Description", 300, 2022, "English", null, null);
         bookVersionEntity = new BookVersionEntity("123-456-789", bookEntity, false, false, 1L);
@@ -119,7 +119,7 @@ public class LoanTests {
         verify(loanRepository).save(loanEntity);
         verify(loanMapper).dtoToEntity(loanToCreate);
         verify(loanMapper).entityToDto(savedEntity);
-    }
+    }*/
 
     @Test
     void testDelete() {

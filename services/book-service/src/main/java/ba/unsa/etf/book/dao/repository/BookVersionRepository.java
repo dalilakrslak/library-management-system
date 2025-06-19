@@ -15,4 +15,9 @@ public interface BookVersionRepository extends JpaRepository<BookVersionEntity, 
 
     Optional<BookVersionEntity> findByIsbnAndLibraryId(String isbn, Long libraryId);
 
+    List<BookVersionEntity> findByBookIdAndLibraryId(Long bookId, Long libraryId);
+
+    List<BookVersionEntity> findByLibraryId(Long libraryId);
+
+    Optional<BookVersionEntity> findByIsbn(String isbn);
 }

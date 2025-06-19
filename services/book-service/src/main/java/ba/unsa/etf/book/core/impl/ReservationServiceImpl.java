@@ -6,7 +6,9 @@ import ba.unsa.etf.book.api.model.User;
 import ba.unsa.etf.book.api.service.ReservationService;
 import ba.unsa.etf.book.core.mapper.ReservationMapper;
 import ba.unsa.etf.book.core.validation.ReservationValidation;
+import ba.unsa.etf.book.dao.model.BookVersionEntity;
 import ba.unsa.etf.book.dao.model.ReservationEntity;
+import ba.unsa.etf.book.dao.repository.BookVersionRepository;
 import ba.unsa.etf.book.dao.repository.ReservationRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -25,6 +27,7 @@ public class ReservationServiceImpl implements ReservationService {
     private final ReservationMapper reservationMapper;
     private final ReservationValidation reservationValidation;
     private final RestTemplate restTemplate;
+    private final BookVersionRepository bookVersionRepository;
 
     @Override
     public List<Reservation> findAll() {
@@ -45,6 +48,16 @@ public class ReservationServiceImpl implements ReservationService {
     public Reservation create(Reservation reservation) {
         ReservationEntity reservationEntity = reservationMapper.dtoToEntity(reservation);
         reservationRepository.save(reservationEntity);
+
+        BookVersionEntity bookVersion = bookVersionRepository.findByIsbn(reservation.getBookVersion())
+                .orElseThrow(() -> new RuntimeException("Book version not found for ISBN: " + reservation.getBookVersion()));
+
+        if (bookVersion.getIsReserved()) {
+            throw new IllegalStateException("Book version is already reserved.");
+        }
+        bookVersion.setIsReserved(true);
+        bookVersionRepository.save(bookVersion);
+
         return reservationMapper.entityToDto(reservationEntity);
     }
 

@@ -1,6 +1,5 @@
 package ba.unsa.etf.transfer.api.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,7 +10,6 @@ public class Library {
     private static final long serialVersionUID = 1L;
 
     @Schema(description = "Unique identifier of the library")
-    @JsonIgnore
     private Long id;
 
     @Schema(description = "Name of the library")

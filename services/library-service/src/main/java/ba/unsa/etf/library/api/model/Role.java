@@ -1,6 +1,5 @@
 package ba.unsa.etf.library.api.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -13,7 +12,6 @@ public class Role implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Schema(description = "Unique identifier of the role")
-    @JsonIgnore
     private Long id;
 
     @Schema(description = "Name of the role")

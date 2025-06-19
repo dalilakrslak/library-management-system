@@ -35,36 +35,55 @@ public class BookServiceApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) {
-		AuthorEntity author = new AuthorEntity(null, "Ivo", "Andrić", "Dobitnik Nobelove nagrade za književnost.");
-		authorRepository.save(author);
+		AuthorEntity rowling = new AuthorEntity(null, "J.K.", "Rowling", "Author of the Harry Potter fantasy series.");
+		AuthorEntity tolkien = new AuthorEntity(null, "J.R.R.", "Tolkien", "Known for The Lord of the Rings and The Hobbit.");
+		AuthorEntity orwell = new AuthorEntity(null, "George", "Orwell", "Famous for dystopian novels like 1984 and Animal Farm.");
+		AuthorEntity austen = new AuthorEntity(null, "Jane", "Austen", "Known for romantic fiction including Pride and Prejudice.");
+		AuthorEntity king = new AuthorEntity(null, "Stephen", "King", "Master of horror and suspense.");
 
-		GenreEntity genre = new GenreEntity(null, "Roman");
-		genreRepository.save(genre);
+		authorRepository.saveAll(List.of(rowling, tolkien, orwell, austen, king));
 
-		BookEntity book = new BookEntity(null, "Na Drini ćuprija", "Roman o životu u Bosni pod Osmanlijama.",312, 1945, "bosanski", author, genre);
-		bookRepository.save(book);
+		GenreEntity fantasy = new GenreEntity(null, "Fantasy");
+		GenreEntity dystopian = new GenreEntity(null, "Dystopian");
+		GenreEntity romance = new GenreEntity(null, "Romance");
+		GenreEntity horror = new GenreEntity(null, "Horror");
+		GenreEntity classic = new GenreEntity(null, "Classic");
 
-		List<Long> libraryIds = List.of(1L, 2L, 3L);
-		int isbnCounter = 1000;
+		genreRepository.saveAll(List.of(fantasy, dystopian, romance, horror, classic));
 
-		for (Long libraryId : libraryIds) {
-			for (int i = 0; i < 3; i++) {
-				String isbn = "9781234" + (isbnCounter++);
-				boolean isCheckedOut = (i == 0);
-				boolean isReserved = (i == 1);
-				BookVersionEntity version = new BookVersionEntity(isbn, book, isCheckedOut, isReserved, libraryId);
-				bookVersionRepository.save(version);
+		BookEntity hp = new BookEntity(null, "Harry Potter and the Sorcerer's Stone", "A young wizard's journey begins.", 320, 1997, "English", rowling, fantasy);
+		BookEntity lotr = new BookEntity(null, "The Fellowship of the Ring", "The first part of The Lord of the Rings trilogy.", 423, 1954, "English", tolkien, fantasy);
+		BookEntity animalFarm = new BookEntity(null, "Animal Farm", "A satirical allegory about totalitarianism.", 112, 1945, "English", orwell, dystopian);
+		BookEntity pride = new BookEntity(null, "Pride and Prejudice", "A classic romance novel.", 279, 1813, "English", austen, romance);
+		BookEntity shining = new BookEntity(null, "The Shining", "A psychological horror novel.", 447, 1977, "English", king, horror);
 
-				if (isCheckedOut) {
-					LoanEntity loan = new LoanEntity(null, 1L, version,
-							LocalDate.of(2025, 3, 23),
-							LocalDate.of(2025, 4, 6),
-							null);
-					loanRepository.save(loan);
-				}
-				if (isReserved) {
-					ReservationEntity reservation = new ReservationEntity(null, 1L, version, LocalDate.now());
-					reservationRepository.save(reservation);
+		bookRepository.saveAll(List.of(hp, lotr, animalFarm, pride, shining));
+
+		List<Long> libraryIds = List.of(1L, 2L, 3L, 4L, 5L);
+		List<BookEntity> books = List.of(hp, lotr, animalFarm, pride, shining);
+		int isbnCounter = 2000;
+
+		for (BookEntity book : books) {
+			for (Long libraryId : libraryIds) {
+				for (int i = 0; i < 3; i++) {
+					String isbn = "9781234" + (isbnCounter++);
+					boolean isCheckedOut = (i == 0);
+					boolean isReserved = (i == 1);
+
+					BookVersionEntity version = new BookVersionEntity(isbn, book, isCheckedOut, isReserved, libraryId);
+					bookVersionRepository.save(version);
+
+					if (isCheckedOut) {
+						LoanEntity loan = new LoanEntity(null, 1L, version,
+								LocalDate.of(2025, 3, 10),
+								LocalDate.of(2025, 3, 20),
+								null);
+						loanRepository.save(loan);
+					}
+					if (isReserved) {
+						ReservationEntity reservation = new ReservationEntity(null, 1L, version, LocalDate.now());
+						reservationRepository.save(reservation);
+					}
 				}
 			}
 		}

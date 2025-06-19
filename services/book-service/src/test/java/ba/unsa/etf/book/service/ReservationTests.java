@@ -9,6 +9,7 @@ import ba.unsa.etf.book.core.validation.ReservationValidation;
 import ba.unsa.etf.book.dao.model.BookEntity;
 import ba.unsa.etf.book.dao.model.BookVersionEntity;
 import ba.unsa.etf.book.dao.model.ReservationEntity;
+import ba.unsa.etf.book.dao.repository.BookVersionRepository;
 import ba.unsa.etf.book.dao.repository.ReservationRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -40,6 +41,9 @@ public class ReservationTests {
     @Mock
     private RestTemplate restTemplate;
 
+    @Mock
+    private BookVersionRepository bookVersionRepository;
+
     @InjectMocks
     private ReservationServiceImpl reservationService;
 
@@ -56,9 +60,14 @@ public class ReservationTests {
 
     @Test
     void testCreate() {
+        BookEntity bookEntity = new BookEntity(1L, "Title", "Description", 300, 2022, "English", null, null);
+        BookVersionEntity bookVersionEntity = new BookVersionEntity("123-456-789", bookEntity, false, false, 1L);
+
         when(reservationMapper.dtoToEntity(any(Reservation.class))).thenReturn(reservationEntity);
         when(reservationRepository.save(any(ReservationEntity.class))).thenReturn(reservationEntity);
         when(reservationMapper.entityToDto(any(ReservationEntity.class))).thenReturn(reservation);
+        when(bookVersionRepository.findByIsbn("123-456-789")).thenReturn(Optional.of(bookVersionEntity));
+        when(bookVersionRepository.save(any(BookVersionEntity.class))).thenReturn(bookVersionEntity);
 
         Reservation result = reservationService.create(reservation);
 
@@ -66,8 +75,13 @@ public class ReservationTests {
         assertEquals(reservation.getId(), result.getId());
         assertEquals(reservation.getUserId(), result.getUserId());
         assertEquals(reservation.getBookVersion(), result.getBookVersion());
+
         verify(reservationRepository).save(any(ReservationEntity.class));
+
+        assertTrue(bookVersionEntity.getIsReserved());
+        verify(bookVersionRepository).save(bookVersionEntity);
     }
+
 
     @Test
     void testFindById() {

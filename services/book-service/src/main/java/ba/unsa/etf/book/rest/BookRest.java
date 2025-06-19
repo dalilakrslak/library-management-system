@@ -3,6 +3,7 @@ package ba.unsa.etf.book.rest;
 import ba.unsa.etf.book.api.model.Book;
 import ba.unsa.etf.book.api.model.BookAvailability;
 import ba.unsa.etf.book.api.model.BookVersion;
+import ba.unsa.etf.book.api.model.BookWithVersions;
 import ba.unsa.etf.book.api.service.BookService;
 import com.netflix.appinfo.EurekaInstanceConfig;
 import io.swagger.v3.oas.annotations.Operation;
@@ -127,5 +128,11 @@ public class BookRest {
         List<BookVersion> bookVersions = bookService.getBookVersions(bookId);
         return bookVersions.isEmpty() ? ResponseEntity.notFound().build() : ResponseEntity.ok(bookVersions);
     }
+
+    @GetMapping("/books/library/{libraryId}")
+    public List<BookWithVersions> getBooksByLibrary(@PathVariable Long libraryId) {
+        return bookService.getBooksWithVersionsByLibrary(libraryId);
+    }
+
 
 }

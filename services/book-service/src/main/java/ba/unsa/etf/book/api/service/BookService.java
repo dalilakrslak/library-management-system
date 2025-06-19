@@ -3,6 +3,7 @@ package ba.unsa.etf.book.api.service;
 import ba.unsa.etf.book.api.model.Book;
 import ba.unsa.etf.book.api.model.BookAvailability;
 import ba.unsa.etf.book.api.model.BookVersion;
+import ba.unsa.etf.book.api.model.BookWithVersions;
 import ba.unsa.etf.book.dao.model.BookVersionEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -29,4 +30,6 @@ public interface BookService {
     List<BookAvailability> getBookAvailability(Long bookId);
 
     List<BookVersion> getBookVersions(Long bookId);
+
+    List<BookWithVersions> getBooksWithVersionsByLibrary(Long libraryId);
 }

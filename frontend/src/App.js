@@ -2,7 +2,6 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import HomePage from './HomePage';
 import AuthPage from './AuthPage';
-import SuperAdminPage from './SuperAdminPage';
 import UsersPage from './UsersPage';
 import BooksPage from './BooksPage';
 import DashboardPage from './DashboardPage';
@@ -13,6 +12,7 @@ import LibrarianBooks from './LibrarianBooks';
 import LibrarianLoans from './LibrarianLoans';
 import BookSearchPage from './BookSearchPage';
 import BookDetailsPage from './BookDetailsPage';
+import SuperAdminPage from './SuperAdminPage';
 
 function App() {
   return (

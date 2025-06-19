@@ -2,10 +2,12 @@ package ba.unsa.etf.book.api.model;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 
 @Data
+@NoArgsConstructor
 public class BookVersion implements Serializable {
     private static final long serialVersionUID = 1L;
 
@@ -23,4 +25,11 @@ public class BookVersion implements Serializable {
 
     @Schema(description = "Library ID")
     private Long libraryId;
+
+    public BookVersion(String isbn, Boolean isCheckedOut, Boolean isReserved, Long libraryId) {
+        this.isbn = isbn;
+        this.isCheckedOut = isCheckedOut;
+        this.isReserved = isReserved;
+        this.libraryId = libraryId;
+    }
 }

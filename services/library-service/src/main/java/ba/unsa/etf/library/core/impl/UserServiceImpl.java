@@ -46,9 +46,15 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public User update(User user) {
-        UserEntity userEntity = userMapper.dtoToEntity(user);
-        userRepository.save(userEntity);
-        return userMapper.entityToDto(userEntity);
+        UserEntity existing = userRepository.findById(user.getId())
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        UserEntity updated = userMapper.dtoToEntity(user);
+
+        updated.setPassword(existing.getPassword());
+
+        userRepository.save(updated);
+        return userMapper.entityToDto(updated);
     }
 
     @Override

@@ -31,7 +31,7 @@ public class UserEntity implements Serializable {
 
     private String phone;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "role_id")
     private RoleEntity role;
 

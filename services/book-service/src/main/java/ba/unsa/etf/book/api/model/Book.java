@@ -1,6 +1,5 @@
 package ba.unsa.etf.book.api.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -14,7 +13,6 @@ public class Book implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Schema(description = "Unique identifier of the book")
-    @JsonIgnore
     private Long id;
 
     @Schema(description = "Title of the book")

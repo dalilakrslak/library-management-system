@@ -4,8 +4,10 @@ import ba.unsa.etf.book.api.model.*;
 import ba.unsa.etf.book.api.service.LoanService;
 import ba.unsa.etf.book.core.mapper.LoanMapper;
 import ba.unsa.etf.book.core.validation.LoanValidation;
+import ba.unsa.etf.book.dao.model.BookVersionEntity;
 import ba.unsa.etf.book.dao.model.LoanEntity;
 import ba.unsa.etf.book.dao.model.ReservationEntity;
+import ba.unsa.etf.book.dao.repository.BookVersionRepository;
 import ba.unsa.etf.book.dao.repository.LoanRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -15,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -24,7 +27,7 @@ public class LoanServiceImpl implements LoanService {
     private final LoanMapper loanMapper;
     private final LoanValidation loanValidation;
     private final RestTemplate restTemplate;
-
+    private final BookVersionRepository bookVersionRepository;
     @Override
     public List<Loan> findAll() {
         return loanRepository.findAll()
@@ -42,9 +45,22 @@ public class LoanServiceImpl implements LoanService {
     @Override
     @Transactional
     public Loan create(Loan loan) {
-        LoanEntity loanEntity = loanMapper.dtoToEntity(loan);
-        loanRepository.save(loanEntity);
-        return loanMapper.entityToDto(loanEntity);
+        BookVersionEntity version = bookVersionRepository.findByIsbn(loan.getBookVersion())
+                .orElseThrow(() -> new RuntimeException("ISBN not found!"));
+
+        if (version.getIsCheckedOut()) {
+            throw new IllegalStateException("Book version is already checked out.");
+        }
+
+        LoanEntity entity = loanMapper.dtoToEntity(loan);
+        entity.setBookVersion(version);
+
+        version.setIsCheckedOut(true);
+        bookVersionRepository.save(version);
+
+        loanRepository.save(entity);
+
+        return loanMapper.entityToDto(entity);
     }
 
     @Override

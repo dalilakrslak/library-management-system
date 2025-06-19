@@ -498,3 +498,85 @@ td span:hover {
   background-color: #ccc;
   color: #000;
 }
+
+.modal select {
+  padding: 0.6rem;
+  margin-bottom: 1rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #fff;
+  font-family: 'Segoe UI', sans-serif;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+
+.modal .react-select__control {
+  padding: 2px;
+  margin-bottom: 1rem;
+  font-size: 1rem;
+  border-radius: 4px;
+}
+
+.select-field {
+  margin-bottom: 1rem;
+  font-size: 1rem;
+}
+
+.select__control {
+  padding: 2px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  min-height: 38px;
+  box-shadow: none;
+}
+
+.select__control--is-focused {
+  border-color: #000;
+  box-shadow: 0 0 0 1px #000;
+}
+
+.select__menu {
+  z-index: 9999;
+}
+.modal form .form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.modal form select,
+.modal form button.check-availability-btn {
+  width: 100%;
+  padding: 8px;
+  font-size: 1rem;
+}
+
+.modal form button.check-availability-btn {
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.disabled-btn {
+  background-color: #ccc;
+  color: #666;
+  cursor: not-allowed;
+}
+.modal form button.check-availability-btn {
+  background-color: #e9ecef;
+  border: 1px solid #ccc;
+  padding: 10px;
+  border-radius: 4px;
+  font-size: 1rem;
+  font-weight: 500;
+  height: auto;
+  transition: background-color 0.2s ease;
+}
+
+.modal form button.check-availability-btn:hover {
+  background-color: #dcdcdc;
+}
