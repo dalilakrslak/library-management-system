@@ -9,6 +9,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Random;
 
 @SpringBootApplication(scanBasePackages = {
 		"ba.unsa.etf.book",
@@ -63,25 +64,31 @@ public class BookServiceApplication implements CommandLineRunner {
 		List<BookEntity> books = List.of(hp, lotr, animalFarm, pride, shining);
 		int isbnCounter = 2000;
 
+		Random rand = new Random();
+		List<Long> userIds = List.of(1L,2L,3L,4L,5L);
+
 		for (BookEntity book : books) {
 			for (Long libraryId : libraryIds) {
-				for (int i = 0; i < 3; i++) {
+				for (int i = 0; i < 6; i++) {
 					String isbn = "9781234" + (isbnCounter++);
-					boolean isCheckedOut = (i == 0);
-					boolean isReserved = (i == 1);
+					boolean isCheckedOut = (i == 0 || i == 1);
+					boolean isReserved = (i == 2 || i == 3);
 
 					BookVersionEntity version = new BookVersionEntity(isbn, book, isCheckedOut, isReserved, libraryId);
 					bookVersionRepository.save(version);
 
+					Long userId = userIds.get(rand.nextInt(userIds.size()));
+					LocalDate today = LocalDate.now();
+
 					if (isCheckedOut) {
-						LoanEntity loan = new LoanEntity(null, 1L, version,
-								LocalDate.of(2025, 3, 10),
-								LocalDate.of(2025, 3, 20),
-								null);
+						LocalDate loanDate = today.minusDays(rand.nextInt(30));
+						LocalDate dueDate = loanDate.plusDays(14 + rand.nextInt(15));
+						LoanEntity loan = new LoanEntity(null, userId, version, loanDate, dueDate, null);
 						loanRepository.save(loan);
 					}
 					if (isReserved) {
-						ReservationEntity reservation = new ReservationEntity(null, 1L, version, LocalDate.now());
+						LocalDate reservationDate = today.minusDays(rand.nextInt(20));
+						ReservationEntity reservation = new ReservationEntity(null, userId, version, reservationDate);
 						reservationRepository.save(reservation);
 					}
 				}

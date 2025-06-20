@@ -1,4 +1,3 @@
-// BookSearchPage.jsx
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './BookSearchPage.css';
@@ -127,6 +126,7 @@ const BookSearchPage = () => {
 
   const checkAvailability = async (bookId) => {
     const token = localStorage.getItem('token');
+    const currentLibraryId = localStorage.getItem('libraryId');
 
     try {
       const res = await fetch(`${ROUTES.books}/version/${bookId}`, {
@@ -138,20 +138,28 @@ const BookSearchPage = () => {
       if (!res.ok) throw new Error('Failed to fetch versions');
 
       const versions = await res.json();
-      return versions.some(v => !v.isCheckedOut && !v.isReserved);
+
+      return versions.some(v =>
+        !v.isCheckedOut &&
+        !v.isReserved &&
+        String(v.libraryId) === currentLibraryId
+      );
     } catch (error) {
       console.error(`Error checking availability for book ${bookId}:`, error);
       return false;
     }
   };
 
+
   return (
     <div className="page">
       <div className="header-bar">
         <h1 className="title">Explore Books</h1>
-        <button className="logout-btn" onClick={handleLogout}>Log Out</button>
+        <div>
+          <button className="nav-btn" onClick={() => navigate('/reservations')}>📚 My Activity</button>
+          <button className="logout-btn" onClick={handleLogout}>Log Out</button>
+        </div>
       </div>
-
       <div className="filters">
         <input
           type="text"

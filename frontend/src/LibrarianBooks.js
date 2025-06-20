@@ -320,10 +320,10 @@ const LibrarianBooks = () => {
                   className="select-field"
                   classNamePrefix="select"
                   name="user"
-                  options={userOptions}
-                  value={userOptions.find(opt => opt.value === loanData.user)}
-                  onChange={selected => setLoanData({ ...loanData, user: selected.value })}
-                  placeholder="Select user"
+                  options={bookOptions}
+                  value={bookOptions.find(opt => opt.value === formData.bookId)}
+                  onChange={selected => setFormData({ ...formData, bookId: selected.value })}
+                  placeholder="Select or search book"
                   isSearchable
                 />
                 <div className="modal-actions">

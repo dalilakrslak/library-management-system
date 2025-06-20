@@ -13,6 +13,8 @@ import LibrarianLoans from './LibrarianLoans';
 import BookSearchPage from './BookSearchPage';
 import BookDetailsPage from './BookDetailsPage';
 import SuperAdminPage from './SuperAdminPage';
+import UserActivityPage from './UserActivityPage';
+
 
 function App() {
   return (
@@ -28,7 +30,7 @@ function App() {
         <Route path="/books/:id" element={<BookDetailsPage />} />
         <Route path="/admindashboard" element={<AdminDashboard />} />
         <Route path="/adminbooks" element={<AdminBooks />} />
-
+        <Route path="/reservations" element={<UserActivityPage />} />
         <Route path="/librariandashboard" element={<LibrarianDashboard />} />
         <Route path="/librarianbooks" element={<LibrarianBooks />} />
         <Route path="/librarianloans" element={<LibrarianLoans />} />
